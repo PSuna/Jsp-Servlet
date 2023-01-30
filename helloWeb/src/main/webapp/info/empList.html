@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>info/empList</title>
+</head>
+<body>
+	<h3>사원리스트</h>
+	<table>
+    <thead>
+      <tr>
+        <th>사원번호</th>
+        <th>이름</th>
+        <th>이메일</th>
+        <th>입사일자</th>
+        <th>직무(job_id)</th>
+        <th>삭제</th>
+      </tr>
+    </thead>
+    <tbody id="list"></tbody>
+  </table>
+  
+  <script>
+    
+    fetch("../empListJson")
+    .then(res => res.json())
+    .then(result => {
+      result.forEach(function(obj,idx,array){
+        let tr = document.createElement("tr");
+        let titles = ["id", "firstName", "email", "hireDate", "job"];
+
+        titles.forEach(function(title){
+          let td = document.createElement("td");
+          td.innerText = obj[title];
+          tr.append(td);
+        });
+
+        let td = document.createElement("td");
+        let btn = document.createElement("button");
+        btn.innerText = "삭제";
+        btn.addEventListener("click", function () {
+          let id = this.parentElement.parentElement.firstChild.innerText;
+          //console.log(this.parentElement.parentElement.firstChild.innerText);
+          fetch("../empListJson?del_id=" + id,{
+              method : "delete",
+              headers :{
+                "Content-Type" : "application/x-www-form-urlencoded"
+              },
+            })
+          .then(resolve => resolve.json())
+          .then(result =>{
+            if(result.retCode == "Success"){
+              console.log("정상적으로 삭제");
+              // this.parentElement.parentElement.remove();
+            }else if(result.retCode == "Fail"){
+              console.log("삭제중 오류발생");
+            }
+          })
+          .catch(reject => console.log(reject));
+        });
+        td.append(btn);
+        tr.append(td);
+        list.append(tr);
+      });
+    });
+
+
+  </script>
+
+  
+</body>
+</html>
