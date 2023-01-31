@@ -82,7 +82,7 @@ public class EmpDAO {
 
 			while (rs.next()) {
 				EmpVO emp = new EmpVO();
-				emp.setEmployeeId(rs.getInt("employee_id"));
+				emp.setEmployeeId(rs.getInt("employee_id")); // DB에 저장된 컬럼명과 일치해야함
 				emp.setFirstName(rs.getString("first_name"));
 				emp.setLastName(rs.getString("last_name"));
 				emp.setSalary(rs.getInt("salary"));
@@ -179,20 +179,19 @@ public class EmpDAO {
 		int r = 0;
 		try {
 			psmt = conn.prepareStatement(sql);
-			psmt.setString(1, emp.getHireDate());
-			psmt.setString(2, emp.getEmail());
-			psmt.setString(3, emp.getJobId());
-			psmt.setString(4, emp.getLastName());
-			psmt.setInt(5, emp.getEmployeeId());
+			psmt.setString(1, emp.getHireDate()); // hire_date
+			psmt.setString(2, emp.getEmail()); // email
+			psmt.setString(3, emp.getJobId()); // job_id
+			psmt.setString(4, emp.getLastName()); // last_name
+			psmt.setInt(5, emp.getEmployeeId()); // employee_id
 			
-			r = psmt.executeUpdate();
-			return r;
+			r = psmt.executeUpdate(); // 처리건수 반환
 			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return r;
+		return r; // 0 또는 1
 	}
 
 	// 삭제
@@ -211,7 +210,7 @@ public class EmpDAO {
 			e.printStackTrace();
 		}
 		
-		return r;
+		return r; // 처리건수 반환 : 0 또는 1이상
 		
 	}
 
