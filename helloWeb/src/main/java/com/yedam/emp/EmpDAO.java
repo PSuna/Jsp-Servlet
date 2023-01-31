@@ -139,6 +139,7 @@ public class EmpDAO {
 			psmt.setString(2, emp.getLastName());// 두번째 파라미터(String)를 emp.getLastName()로 채워준다는말
 			psmt.setString(3, emp.getEmail());
 			psmt.setString(4, emp.getHireDate());
+			psmt.setString(5, emp.getJobId());
 			
 			r = psmt.executeUpdate(); // 처리된 건수를 반환
 				
@@ -160,6 +161,29 @@ public class EmpDAO {
 			psmt = conn.prepareStatement(sql);
 			psmt.setInt(1, sal);
 			psmt.setInt(2, id);
+			
+			r = psmt.executeUpdate();
+			return r;
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return r;
+	}
+	
+	// 수정2 메소드 오버로딩
+	public int updateEmp(EmpVO emp) {
+		connect();
+		sql = "update emp_temp set hire_date = ?, email = ?, job_id = ? , last_name = ? where employee_id = ?";
+		int r = 0;
+		try {
+			psmt = conn.prepareStatement(sql);
+			psmt.setString(1, emp.getHireDate());
+			psmt.setString(2, emp.getEmail());
+			psmt.setString(3, emp.getJobId());
+			psmt.setString(4, emp.getLastName());
+			psmt.setInt(5, emp.getEmployeeId());
 			
 			r = psmt.executeUpdate();
 			return r;

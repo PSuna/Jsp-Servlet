@@ -5,8 +5,41 @@
 <title>info/empList</title>
 </head>
 <body>
+	<h3>사원등록페이지</h3>
+	  <form name="empForm" method="post" action="../myinfo">
+      <table border="1">
+        <tr>
+          <th><label>사원번호:</label></th>
+          <td><input type="text" name="emp_id"><br></td>
+        </tr>
+        <tr>
+          <th><label>이름:</label></th> 
+          <td><input type="text" name="last_name"><br></td>
+        </tr>
+        <tr>
+          <th><label>이메일:</label></th> 
+          <td><input type="text" name="email"><br></td>
+        </tr>
+        <tr>
+          <th><label>입사일자:</label></th> 
+          <td><input type="text" name="hire_date"><br></td>
+        </tr>
+        <tr>
+          <th><label>직무:</label></th> 
+          <td><input type="text" name="job_id"><br></td>
+        </tr>
+        <tr>
+          <td colspan="2" align="center">
+            <input type="submit" value="저장">
+            <input type="reset" value="초기화">
+            <input id="delSelectedBtn" type="button" value="선택삭제">
+          </td>
+        </tr>
+      </table>
+	  </form>
+	  
 	<h3>사원리스트</h>
-	<table>
+	<table border="1">
     <thead>
       <tr>
         <th>사원번호</th>
@@ -15,58 +48,14 @@
         <th>입사일자</th>
         <th>직무(job_id)</th>
         <th>삭제</th>
+        <th>수정</th>
+        <th><input type="checkbox"></th>
       </tr>
     </thead>
     <tbody id="list"></tbody>
   </table>
-  
-  <script>
-    
-    fetch("../empListJson")
-    .then(res => res.json())
-    .then(result => {
-      result.forEach(function(obj,idx,array){
-        let tr = document.createElement("tr");
-        let titles = ["id", "firstName", "email", "hireDate", "job"];
 
-        titles.forEach(function(title){
-          let td = document.createElement("td");
-          td.innerText = obj[title];
-          tr.append(td);
-        });
-
-        let td = document.createElement("td");
-        let btn = document.createElement("button");
-        btn.innerText = "삭제";
-        btn.addEventListener("click", function () {
-          let id = this.parentElement.parentElement.firstChild.innerText;
-          //console.log(this.parentElement.parentElement.firstChild.innerText);
-          fetch("../empListJson?del_id=" + id,{
-              method : "delete",
-              headers :{
-                "Content-Type" : "application/x-www-form-urlencoded"
-              },
-            })
-          .then(resolve => resolve.json())
-          .then(result =>{
-            if(result.retCode == "Success"){
-              console.log("정상적으로 삭제");
-              // this.parentElement.parentElement.remove();
-            }else if(result.retCode == "Fail"){
-              console.log("삭제중 오류발생");
-            }
-          })
-          .catch(reject => console.log(reject));
-        });
-        td.append(btn);
-        tr.append(td);
-        list.append(tr);
-      });
-    });
-
-
-  </script>
-
+	<script src="../js/empList.js"></script>
   
 </body>
 </html>

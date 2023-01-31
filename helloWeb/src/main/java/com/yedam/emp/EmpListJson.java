@@ -12,6 +12,76 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet("/empListJson")
 public class EmpListJson extends HttpServlet {
 
+//	@Override
+//	protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+//		//입력값의 한글 처리
+//		req.setCharacterEncoding("utf-8");
+//		
+//		String id = req.getParameter("id");
+//		String name = req.getParameter("name");
+//		String job = req.getParameter("job");
+//		String hire = req.getParameter("hire");
+//		String mail = req.getParameter("mail");
+//		
+//		EmpVO vo = new EmpVO();
+//		vo.setEmployeeId(Integer.parseInt(id));
+//		vo.setLastName(name);
+//		vo.setJobId(job);
+//		vo.setHireDate(hire);
+//		vo.setEmail(mail);
+//		
+//		System.out.println(vo);
+//		resp.getWriter().print("complete");
+//		
+//	}
+	
+	@Override
+	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+	
+		//입력값의 한글 처리
+		req.setCharacterEncoding("utf-8");
+		
+		String param = req.getParameter("param");
+		String id = req.getParameter("id");
+		String name = req.getParameter("name");
+		String job = req.getParameter("job");
+		String hire = req.getParameter("hire");
+		String mail = req.getParameter("mail");
+		
+		EmpVO vo = new EmpVO();
+		vo.setEmployeeId(Integer.parseInt(id));
+		vo.setLastName(name);
+		vo.setJobId(job);
+		vo.setHireDate(hire);
+		vo.setEmail(mail);
+		
+		EmpDAO dao = new EmpDAO();
+		
+		// param = update => DB update
+		// param = 값이 없다면 => DB insert
+		if(param.equals("update")) {
+			if(dao.updateEmp(vo) > 0) {
+				// {"retCode":"Success"}
+				resp.getWriter().print("{\"retCode\":\"Success\"}");
+			}else {
+				//{"retCode":"Fail"}
+				resp.getWriter().print("{\"retCode\":\"Fail\"}");
+			}
+		}else {
+			
+			if(dao.addEmp(vo) > 0) {
+				// {"retCode":"Success"}
+				resp.getWriter().print("{\"retCode\":\"Success\"}"); // 응답 : json형식(String) 데이터 보냄
+			}else {
+				//{"retCode":"Fail"}
+				resp.getWriter().print("{\"retCode\":\"Fail\"}");
+			}
+			
+		}
+		
+		
+	}
+	
 	// 제어의 역전(IOC)
 	@Override
 	protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -45,8 +115,9 @@ public class EmpListJson extends HttpServlet {
 		for(int i = 0; i < list.size(); i++) {
 			json += "{\"id\":" + list.get(i).getEmployeeId() + 
 					",\"firstName\": \"" + list.get(i).getFirstName() +
+					"\",\"lastName\": \"" + list.get(i).getLastName() +
 					"\",\"email\": \"" + list.get(i).getEmail() +
-					"\",\"hireDate\": \"" + list.get(i).getHireDate() +
+					"\",\"hireDate\": \"" + list.get(i).getHireDate().substring(0,10) +
 					"\",\"job\": \"" + list.get(i).getJobId() +
 					"\"}";
 			
