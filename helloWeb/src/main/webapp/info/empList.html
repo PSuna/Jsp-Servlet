@@ -1,8 +1,22 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<title>info/empList</title>
+  <meta charset="UTF-8">
+  <title>info/empList</title>
+  <style>
+    tr.delError{
+      background-color: gray;
+    }
+
+    select.right{
+      float: right;
+    }
+    a {
+      margin-right: 4px;
+      margin-left: 4px;
+    }
+
+  </style>
 </head>
 <body>
 	<h3>사원등록페이지</h3>
@@ -37,6 +51,8 @@
         </tr>
       </table>
 	  </form>
+
+    
 	  
 	<h3>사원리스트</h>
 	<table border="1">
@@ -55,6 +71,8 @@
     <tbody id="list"></tbody>
   </table>
 
+  
+  <div id="paging"></div>
 	<script src="../js/empList.js"></script>
   
 </body>

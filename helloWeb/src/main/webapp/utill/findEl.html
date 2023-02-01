@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>util/findEl.html</title>
+<style>
+
+  div.outer{
+    background-color: yellow;
+    width: 540px;
+    height: 350px;
+  }
+
+  div.inner {
+    display : inline-block;
+    background-color: aqua;
+    height: 30px;
+    width: 120px;
+    margin: 2px;
+    border: 1px solid black;
+  }
+
+</style>
+</head>
+<body>
+  <div id="list" class = "outer"></div>
+  <input type="text" id="search">
+  <button id="btn">제거하기</button>
+  <div id ="time"></div>
+
+<script>
+  let words = `Lorem ipsum dolor sit amet consectetur adipisicing elit. Quidem tempore, cum commodi unde, id, magni quisquam ratione deleniti molestias magnam recusandae. Sit, consequuntur eius! Ea fugit aliquid laborum! Quo, ut?`
+  let items = words.split(" ");
+  let count = 0;
+  items.forEach((word)=>{
+    let div = document.createElement("div");
+    div.setAttribute("class","inner");
+    div.innerText = word;
+    list.append(div);
+    count++;
+  })
+
+  btn.addEventListener("click", function(){
+      let str = search.value;
+      document.querySelectorAll("#list div").forEach((childDiv)=>{
+        if(childDiv.innerText == str){
+          alert(str + "이 삭제되었습니다");
+          childDiv.remove();
+          search.value = "";
+          count--;
+        }
+      })
+  })
+
+  // setInterval 100초 그 시간안에 끝내면 성공이라 워닝 띄우기 => 실패
+  let div = document.createElement("div");
+  let i = 10;
+  
+  function fun() {
+   div.innerText = i--;
+  }
+
+  function stopClock() {
+      if (i == 0) {
+      alert("타임오버");
+      div.innerText = 0;
+      clearInterval(timer);
+      return;
+    }
+  }
+  time.append(div);
+ let timeAttack = setInterval(fun, 1000); // 1초
+ clearInterval(timeAttack);
+
+  
+  
+
+
+ 
+  
+
+
+</script>
+
+</body>
+</html>

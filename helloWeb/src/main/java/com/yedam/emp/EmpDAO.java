@@ -73,7 +73,7 @@ public class EmpDAO {
 	// List<Map<String, Object>> 비교
 	public List<EmpVO> empVoList() {
 		connect();
-		sql = "select * from emp_temp";
+		sql = "select * from emp_temp order by 1"; // 첫번째 컬럼기준으로 오름차순
 		List<EmpVO> list = new ArrayList<>();
 		try {
 

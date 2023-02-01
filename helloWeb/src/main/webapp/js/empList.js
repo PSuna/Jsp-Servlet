@@ -3,14 +3,22 @@
  */
 
     // 목록 출력하기    
+    let totalAry = []; // 전체목록 담아 놓을 용도
+
     fetch("../empListJson") //get방식
     .then(res => res.json()) // json(String) => json(객체)로 파싱 [{객체},{객체},{객체}]
     .then(result => {
+      localStorage.setItem("total",result.length);  // localStorage에서 total이라는 result의 전체건수를 담아놓기위해 
+      totalAry = result;
+      showPages(2);
+      employeeList(2);
       // item에는 result[0] => result[1].... 이 하나씩 들어감
-      result.forEach(function(item,idx,array){ // result : json(객체)들을 모아놓은 배열에서 항목하나당(객체) item에 하나씩 가져옴
-        let tr = makeTr(item); // tr 생성후 반환
-        list.append(tr);
-      }); // result 배열에 등록된  값의 갯수만큼 function()실행
+      //result.forEach(function(item,idx,array){ // result : json(객체)들을 모아놓은 배열에서 항목하나당(객체) item에 하나씩 가져옴
+      //  let tr = makeTr(item); // tr 생성후 반환
+      //  list.append(tr);
+      //}); // result 배열에 등록된  값의 갯수만큼 function()실행
+
+      
     });
 
     // 저장버튼에 submit 이벤트 등록
@@ -54,7 +62,7 @@
       td = document.createElement("td");
       let chk = document.createElement("input");
       chk.setAttribute("type", "checkbox"); // 속성 설정
-      chk.addEventListener("change",selectCheckBoxChange);
+      chk.addEventListener("change",checkAllFnc);
       td.append(chk); // <td><input type=checkbox></td>
       tr.append(td);
 
@@ -62,7 +70,10 @@
       return tr;
     }
 
-    function selectCheckBoxChange(){
+    // 전체 선택 체크 박스 - 개별체크박스 동기화
+    function checkAllFnc(){
+      /*
+      // 내가 짠 코드
       let ckb = document.querySelectorAll("#list input[type='checkbox']");
       for(let i = 0; i < ckb.length; i++){
         if(ckb[i].checked != true){
@@ -71,6 +82,19 @@
         }
       }
       document.querySelector("thead input[type='checkbox']").checked = true;
+      */
+
+      // 교수님이 짠 코드
+      // 전체건수 vs 선택건수
+      let allTr = document.querySelectorAll("tbody#list tr"); // tbody의 id가 list인곳의 tr들
+      let chkTr = document.querySelectorAll("tbody#list tr input[type='checkbox']:checked"); // tbody의 id가 list인곳에 체크박스에 선택되어있는것들
+     
+      if(allTr.length == chkTr.length){ // 전체 tr행의 갯수와 체크박스에 체크되어있는 tr행의 갯수 비교
+        document.querySelector('thead input[type="checkbox"]').checked = true; // 갯수가 같으면 전체선택체크박스 선택
+      }else{
+        document.querySelector('thead input[type="checkbox"]').checked = false; // 다르면 전체선택체크박스 해제
+      }
+      console.log(allTr.length, chkTr.length);
     }
 
     // 삭제버튼을 누르면 이벤트가 실행될 콜백함수
@@ -283,26 +307,116 @@
 
     }
 
+    // // 선택삭제 처리
+    // // fetch API => 비동기방식처리
+    // function deleteCheckedFunc(){
+	  // // list아래의 체크되어 있는 <input type=checkbox>들을 모두 가져와서 => 하나씩(forEach의 chk) 삭제
+    //   document.querySelectorAll('#list input[type="checkbox"]:checked').forEach(chk =>{
+    //     let id = chk.parentElement.parentElement.firstChild.innerText; // tr의 첫번째 td의값 = checked된 해당행의 id값
+    //     fetch("../empListJson?del_id=" + id,{
+    //       method : "delete",
+    //       headers :{
+    //         "Content-Type" : "application/x-www-form-urlencoded"
+    //       },
+    //     })
+    //     .then(resolve => resolve.json()) // {retCode : "Success"} 혹은 {retCode : "Fail"}
+    //     .then(result =>{
+    //       if(result.retCode == "Success"){ // 삭제 성공
+    //           chk.parentElement.parentElement.remove(); // checked된 해당행(tr) 삭제
+    //       }else if(result.retCode == "Fail"){ // 삭제 실패
+    //          //alert("삭제중 오류 발생");
+    //       }
+    //     })
+    //     .catch(reject => console.log(reject));
+
+    //     })
+    // }
+
     // 선택삭제 처리
-    function deleteCheckedFunc(){
-	  // tbody에 체크되어 있는 <input type=checkbox>들을 모두 가져와서 => 하나씩(forEach의 chk) 삭제
-      document.querySelectorAll('tbody input[type="checkbox"]:checked').forEach(chk =>{
-        let id = chk.parentElement.parentElement.firstChild.innerText; // tr의 첫번째 td의값 = checked된 해당행의 id값
-        fetch("../empListJson?del_id=" + id,{
+    // fetch API => 비동기방식처리 => (async, await)을 사용해서 동기식처리로 바꾸기 
+    // => await는 async안에서만 사용가능하고 promise객체에만 붙일수있음
+    // html : id 값을 선택 삭제처리
+    // 서블릿 : id값을 받아서 성공/실패 => 반환 {id:100, retCode:Success/Fail}
+    // html : [{id:100, retCode : Success}, {id:101, retCode: Fail}....]
+    async function deleteCheckedFunc(){
+      let ids = [];
+	    
+      // list아래의 체크되어 있는 <input type=checkbox>들을 모두 가져와서 => 하나씩(forEach의 chk) 삭제
+      let chks = document.querySelectorAll('#list input[type="checkbox"]:checked')
+      
+      for(let i = 0; i < chks.length; i++){
+        let id = chks[i].parentElement.parentElement.firstChild.innerText; // tr의 첫번째 td의값 = checked된 해당행의 id값
+        let resp = await fetch("../empListJson?del_id=" + id,{
           method : "delete",
           headers :{
             "Content-Type" : "application/x-www-form-urlencoded"
           },
         })
-        .then(resolve => resolve.json()) // {retCode : "Success"} 혹은 {retCode : "Fail"}
-        .then(result =>{
-          if(result.retCode == "Success"){ // 삭제 성공
-              chk.parentElement.parentElement.remove(); // checked된 해당행(tr) 삭제
-          }else if(result.retCode == "Fail"){ // 삭제 실패
-             
-          }
-        })
-        .catch(reject => console.log(reject));
 
-        })
+        // resp에 json(String)형태 : {id:100, retCode:Success/Fail} 반환됨
+        // json(객체)로 파싱
+        let json = await resp.json(); // await : 위에 resp변수가 처리될때까지 기다림 
+        console.log(json);
+        ids.push(json); // ids : 삭제한 id들의 배열 [{id:101,retCode:Success},{id:102,retCode:Success}]
+      }
+        //console.log('ids>>>', ids); // alert(101,102,103 삭제했습니다!)
+
+        // DB에서 delete한걸 화면에 삭제해주는 함수
+        // => 삭제한 id들의 배열 [{id:101,retCode:Success},{id:102,retCode:Success}]
+        processAfterFetch(ids); 
+
+    }
+
+    // 화면처리
+    function processAfterFetch(ary=[]){ // ary는 배열을 의미함 : 삭제한 id들의 배열 [{id:101,retCode:Success},{id:102,retCode:Success}]
+      let targetTr = document.querySelectorAll("#list tr");
+
+      console.log(targetTr, ' vs ', ary);
+
+      // targetTr vs ary
+      targetTr.forEach(tr => { // list아래의 모든 tr을 하나씩 가져와서 tr에 저장
+        for(let i = 0; i < ary.length; i++){
+          if(tr.children[0].innerText == ary[i].id){ // tr의 첫번째자식 => id값 과 arry배열의 id값을 비교해서 같다면
+            if(ary[i].retCode == "Success"){ // retCode가 Success인 조건하에 해당행 삭제
+              tr.remove(); 
+            }else{ // 실패시 style을 그레이로줌
+              tr.setAttribute("class","delError");
+            }
+          }
+        }
+      })
+    }
+
+    // 페이지 목록()
+    function showPages(curPage = 5){
+      let endPage = Math.ceil(curPage / 10) * 10; // 올림
+      let startPage = endPage - 9;
+      let realEnd = Math.ceil(255 / 10);
+      let paging = document.getElementById("paging");
+      endPage = endPage > realEnd ? realEnd : endPage;
+
+      for(let i = startPage; i <= endPage; i++){
+        let aTag = document.createElement('a');
+        aTag.href = "/index.html";
+        aTag.innerText = i;
+        paging.append(aTag);
+      }
+    }
+ 
+    // 사원 목록()
+    function employeeList(curPage = 5){
+
+      let end = curPage * 10;
+      let start = end - 9;
+      let newList = totalAry.filter((emp, idx) => {
+        return (idx+1) >= start && idx < end;
+      })
+
+      let lst = document.getElementById("list");
+
+      newList.forEach(emp => {
+        let tr = makeTr(emp);
+        lst.append(tr);
+      })
+
     }

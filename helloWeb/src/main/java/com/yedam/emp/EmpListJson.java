@@ -1,7 +1,9 @@
 package com.yedam.emp;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -9,31 +11,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 @WebServlet("/empListJson")
 public class EmpListJson extends HttpServlet {
-
-//	@Override
-//	protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-//		//입력값의 한글 처리
-//		req.setCharacterEncoding("utf-8");
-//		
-//		String id = req.getParameter("id");
-//		String name = req.getParameter("name");
-//		String job = req.getParameter("job");
-//		String hire = req.getParameter("hire");
-//		String mail = req.getParameter("mail");
-//		
-//		EmpVO vo = new EmpVO();
-//		vo.setEmployeeId(Integer.parseInt(id));
-//		vo.setLastName(name);
-//		vo.setJobId(job);
-//		vo.setHireDate(hire);
-//		vo.setEmail(mail);
-//		
-//		System.out.println(vo);
-//		resp.getWriter().print("complete");
-//		
-//	}
 	
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -90,14 +72,29 @@ public class EmpListJson extends HttpServlet {
 		// 처리의 주체 : 톰캣
 		String id = req.getParameter("del_id"); // 요청페이지에서 del_id로 파라미터 지정
 		
+		// {id: 101, retCode : Success/Fail}
+		Map<String, Object> map = new HashMap<>();
+		map.put("id", id); // 삭제할 id값
+		
+		
 		EmpDAO dao = new EmpDAO();
 		if(dao.deleteEmp(Integer.parseInt(id)) > 0) { // 삭제건수가 1이상이면
 			// {"retCode":"Success"}
-			resp.getWriter().print("{\"retCode\":\"Success\"}"); // json(String)
+			//resp.getWriter().print("{\"retCode\":\"Success\"}"); // json(String)
+			map.put("retCode", "Success");
 		}else {
 			//{"retCode":"Fail"}
-			resp.getWriter().print("{\"retCode\":\"Fail\"}"); // json(String)
+			//resp.getWriter().print("{\"retCode\":\"Fail\"}"); // json(String)
+			map.put("retCode", "Fail");
 		}
+		
+		// map => json 형태로 변환
+		// 현재 map 변수에 "id":"id값","retCode":"Success/Fail" 형태로 저장됨
+		// List<Map<String,Object>> = new ArrayList<>(); 를 사용해서 [{"id":"id값","retCode":"Success/Fail"},{"id2":"id값2","retCode":"Success/Fail"}]
+		
+		// "id":"id값","retCode":"Success/Fail" 형태를 {"id":"id값","retCode":"Success/Fail"}처럼 json형태로 만들어줌
+		Gson gson = new GsonBuilder().create(); 
+		resp.getWriter().print(gson.toJson(map)); // json(Object)형태를 => json(String)으로 바꿔줌
 	}
 	
 	@Override
@@ -129,4 +126,5 @@ public class EmpListJson extends HttpServlet {
 		resp.getWriter().print(json); // 화면에 json(String) 데이터를 그려줌
 		
 	}
+
 }
