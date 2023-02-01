@@ -90,7 +90,7 @@ public class EmpListJson extends HttpServlet {
 		
 		// map => json 형태로 변환
 		// 현재 map 변수에 "id":"id값","retCode":"Success/Fail" 형태로 저장됨
-		// List<Map<String,Object>> = new ArrayList<>(); 를 사용해서 [{"id":"id값","retCode":"Success/Fail"},{"id2":"id값2","retCode":"Success/Fail"}]
+		// 나중에 배열 보내고싶으면 List<Map<String,Object>> = new ArrayList<>(); 를 사용해서 [{"id":"id값","retCode":"Success/Fail"},{"id2":"id값2","retCode":"Success/Fail"}]형태로 보내기
 		
 		// "id":"id값","retCode":"Success/Fail" 형태를 {"id":"id값","retCode":"Success/Fail"}처럼 json형태로 만들어줌
 		Gson gson = new GsonBuilder().create(); 

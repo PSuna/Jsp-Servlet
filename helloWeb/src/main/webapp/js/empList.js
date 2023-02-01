@@ -8,7 +8,7 @@
     fetch("../empListJson") //get방식
     .then(res => res.json()) // json(String) => json(객체)로 파싱 [{객체},{객체},{객체}]
     .then(result => {
-      localStorage.setItem("total",result.length);  // localStorage에서 total이라는 result의 전체건수를 담아놓기위해 
+      localStorage.setItem("total",result.length);  // localStorage에 result의 전체건수를 total이라는 변수에 담아놓기위한 실행문
       totalAry = result;
       showPages(2);
       employeeList(2);
@@ -388,34 +388,39 @@
     }
 
     // 페이지 목록()
-    function showPages(curPage = 5){
-      let endPage = Math.ceil(curPage / 10) * 10; // 올림
-      let startPage = endPage - 9;
-      let realEnd = Math.ceil(255 / 10);
+    function showPages(curPage = 5){ // curPage : 현재 출력할 페이지
+      let endPage = Math.ceil(curPage / 10) * 10; // 끝페이지, Math.ceil : 올림
+      let startPage = endPage - 9; // 시작 페이지
+      let realEnd = Math.ceil(255 / 10); // 진짜 마지막 페이지
       let paging = document.getElementById("paging");
-      endPage = endPage > realEnd ? realEnd : endPage;
+      endPage = endPage > realEnd ? realEnd : endPage; // 끝페이지 > 진짜 마지막페이지보다 크다면 진짜마지막페이지를 저장
 
-      for(let i = startPage; i <= endPage; i++){
-        let aTag = document.createElement('a');
-        aTag.href = "/index.html";
+      for(let i = startPage; i <= endPage; i++){ // 시작페이지 ~ 끝페이지
+        let aTag = document.createElement('a'); // a 태그 생성
+        aTag.href = "../index.html"; // a태그의 href의 속성 index.html
         aTag.innerText = i;
-        paging.append(aTag);
+        paging.append(aTag); // <div><a href="../index.html">1</a><ahref="../index.html">2</a>....</div>
       }
     }
  
     // 사원 목록()
-    function employeeList(curPage = 5){
+    function employeeList(curPage = 5){ // 현재 출력할 페이지
 
-      let end = curPage * 10;
-      let start = end - 9;
-      let newList = totalAry.filter((emp, idx) => {
-        return (idx+1) >= start && idx < end;
+      // 1~10 , 11 ~ 20...
+      let end = curPage * 10; // 끝목록
+      let start = end - 9; // 시작 목록
+
+      
+      let newList = totalAry.filter((emp, idx) => { // totalAry : 전체 사원목록 배열
+        // idx와 totalAry는 0부터 시작 , 0 ~ 9 => 10개
+        // start(1부터시작) ~ end-1 사이의 목록에 해당하는 것들만 newList변수에 저장됨
+        return (idx+1) >= start && idx < end; 
       })
 
       let lst = document.getElementById("list");
 
-      newList.forEach(emp => {
-        let tr = makeTr(emp);
+      newList.forEach(emp => { // start(1부터시작) ~ end-1 사이의 목록에 해당하는 것들만 
+        let tr = makeTr(emp); // tr을 만듦
         lst.append(tr);
       })
 
