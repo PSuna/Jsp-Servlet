@@ -19,7 +19,7 @@ public class EmpDAO extends DAO{
 		return instance;
 	}
 	
-	public List<EmpVO> empList(){
+	public List<EmpVO> empList(){ 
 		List<EmpVO> emps = new ArrayList<>();
 		connect();
 		sql = "select * from emp_temp order by employee_id";

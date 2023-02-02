@@ -19,7 +19,7 @@ public class ServiceControl implements Command { // 구현 클래스
 	public void exec(HttpServletRequest req, HttpServletResponse resp) {
 		System.out.println("서비스컨트롤...");
 		EmpService service = new EmpServiceImpl();
-		List<EmpVO> list = service.empList();
+		List<EmpVO> list = service.empList();  
 		
 		// json 목록
 		Gson gson = new GsonBuilder().create();

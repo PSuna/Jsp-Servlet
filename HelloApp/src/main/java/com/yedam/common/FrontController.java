@@ -14,12 +14,14 @@ import javax.servlet.http.HttpServletResponse;
 import com.yedam.emp.command.LoginControl;
 import com.yedam.emp.command.ServiceControl;
 
-@WebServlet("*.do")
+@WebServlet("*.do") // url
 public class FrontController extends HttpServlet {
 
 	// url 패턴과 실행할 프로그램과 매핑
 	Map<String, Command> map;
 	
+	// 서블릿. 생명주기(규칙이 정해져있음) : 인스턴스 -> init -> service -> destroy
+	// 생성자
 	public FrontController() {
 		map = new HashMap<>();
 	}
@@ -33,14 +35,14 @@ public class FrontController extends HttpServlet {
 	@Override
 	protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		// url패턴을 확인 => 요청페이지 어떤지?
-		String uri = req.getRequestURI(); // http://localhost:8081/HelloApp/*.do 에서 host 정보를 빼고 /HelloApp/*.do
-//		System.out.println("uri: " + uri);
+		String uri = req.getRequestURI(); // /HelloApp/*.do : http://localhost:8081/HelloApp/service.do 에서 host 정보를 빼고 
+		System.out.println("uri: " + uri);
 		
-		String context = req.getContextPath(); // HelloApp
-//		System.out.println("context: " + context);
+		String context = req.getContextPath(); // /HelloApp : 9글자
+		System.out.println("context: " + context);
 		
 		String page = uri.substring(context.length()); // /*.do
-//		System.out.println(page);
+		System.out.println(page);
 		
 		Command command = map.get(page); // get(/*.do)
 		command.exec(req, resp);

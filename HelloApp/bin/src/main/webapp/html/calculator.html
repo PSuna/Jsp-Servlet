@@ -1,0 +1,149 @@
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <title>계산기</title>
+  <style>
+  #container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+  }
+  
+  #container > div {
+    border: 3px solid gray;
+  }
+  
+  #display,
+  #result {
+    width: 400px;
+    height: 80px;
+    font-size: 60px;
+    font-weight: bold;
+    text-align: right;
+    padding-right: 8px;
+  }
+  
+  .buttonWrap {
+    display: flex;
+    flex-direction: row;
+  }
+  
+  .buttonWrap button {
+    width: 100px;
+    height: 80px;
+    font-size: 20px;
+    padding: 10px;
+  }
+  </style>
+</head>
+
+<body>
+  <div id="container">
+    <div>
+      <div>
+        <input id="display" type="text" />
+      </div>
+      <div>
+        <input id="result" type="text" />
+      </div>
+
+      <div id="cal">
+        <div class="buttonWrap">
+          <button>%</button>
+          <button id="reset">C</button>
+          <button>del</button>
+          <button>/</button>
+        </div>
+        <div class="buttonWrap">
+          <button>9</button>
+          <button>8</button>
+          <button>7</button>
+          <button>*</button>
+        </div>
+        <div class="buttonWrap">
+          <button>6</button>
+          <button>5</button>
+          <button>4</button>
+          <button id="plus">+</button>
+        </div>
+        <div class="buttonWrap">
+          <button>3</button>
+          <button>2</button>
+          <button>1</button>
+          <button>-</button>
+        </div>
+        <div class="buttonWrap">
+          <button>0</button>
+          <button>.</button>
+          <button style="width:200px">=</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+
+    /*
+      [계산기 만들기]
+      1. 전체 버튼 태그에다가 클릭 이벤트 걸기
+      2. 버튼을 클릭하면 innerText값을 display에 표시하는 함수만들기
+      3. = 버튼을 누를때 display에 표시된 계산식을 계산(연산)하는 함수 만들기 
+      4. C버튼 눌를때 display 부분 초기화
+
+      계산식이 문자열일 경우 ex) 10+2+3 / 5 = 3
+      숫자와 연산자를 따로 뽑아오기
+      숫자 : split("+|-|*|-") 쓰면됨
+      연산자 : str문을 forEach해서 조건문을통해 연산자만 뽑아오기
+    */
+
+    let btn = document.querySelectorAll("button");
+    
+    btn.forEach((clickBtn) => {
+
+      clickBtn.addEventListener("click", function () {
+        let cal = this.innerText;
+        display.value += cal;
+    })
+  })
+
+  plus.addEventListener("click",function(){
+
+    let cal = display.value;
+    let strNum = cal.split("+|-|*|-");
+    let num = [];
+    let operator = [];
+    let index = 0;
+
+    for(let i = 0; i < num; i++){
+      num.push(parseInt(strNum)); // String => Int 변환
+    }    
+
+    index = cal.indexOf("+");
+
+    operator.push(cal.charAt(index));
+    
+    
+
+
+  })
+
+  reset.addEventListener("click", function(){
+
+    display.value = "";
+    result.value = "";
+
+  })
+    
+    
+
+
+
+  </script>
+</body>
+
+</html>
