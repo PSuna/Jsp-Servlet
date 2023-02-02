@@ -15,6 +15,31 @@
       margin-right: 4px;
       margin-left: 4px;
     }
+    .center {
+      text-align: center;
+    }
+
+  .pagination {
+    display: inline-block;
+  }
+
+  .pagination a {
+    color: black;
+    float: left;
+    padding: 8px 16px;
+    text-decoration: none;
+    transition: background-color .3s;
+    border: 1px solid #ddd;
+    margin: 0 4px;
+  }
+
+  .pagination a.active {
+    background-color: #4CAF50;
+    color: white;
+    border: 1px solid #4CAF50;
+  }
+
+  .pagination a:hover:not(.active) {background-color: #ddd;}
 
   </style>
 </head>
@@ -54,7 +79,14 @@
 
     
 	  
-	<h3>사원리스트</h>
+	<h3>사원리스트
+    <select class="right" name="pageCnt" id="pageCnt">
+      <option value="5">5건씩</option>
+      <option value="10">10건씩</option>
+      <option value="30">30건씩</option>
+    </select>
+  </h3>
+
 	<table border="1">
     <thead>
       <tr>
@@ -70,10 +102,15 @@
     </thead>
     <tbody id="list"></tbody>
   </table>
+  <br>
 
+  <div class = "center">
+    <div id="paging" class="pagination"></div>
+  </div>
   
-  <div id="paging"></div>
-	<script src="../js/empList.js"></script>
+  <br>
+	
+  <script src="../js/empList.js"></script>
   
 </body>
 </html>

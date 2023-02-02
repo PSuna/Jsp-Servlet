@@ -8,17 +8,21 @@
     fetch("../empListJson") //get방식
     .then(res => res.json()) // json(String) => json(객체)로 파싱 [{객체},{객체},{객체}]
     .then(result => {
+      console.log(result);
       localStorage.setItem("total",result.length);  // localStorage에 result의 전체건수를 total이라는 변수에 담아놓기위한 실행문
       totalAry = result;
-      showPages(2);
-      employeeList(2);
+      //showPages(5);
+      //employeeList(5);
+
+      // 정의한 이벤트를 실행할때 dispatchEvent(정의한 이벤트)활용
+      document.querySelector("#pageCnt").dispatchEvent(chgEvent);
+
       // item에는 result[0] => result[1].... 이 하나씩 들어감
       //result.forEach(function(item,idx,array){ // result : json(객체)들을 모아놓은 배열에서 항목하나당(객체) item에 하나씩 가져옴
       //  let tr = makeTr(item); // tr 생성후 반환
       //  list.append(tr);
       //}); // result 배열에 등록된  값의 갯수만큼 function()실행
 
-      
     });
 
     // 저장버튼에 submit 이벤트 등록
@@ -29,7 +33,11 @@
 
     // 선택삭제 버튼
     document.querySelector("#delSelectedBtn").addEventListener("click",deleteCheckedFunc); // id가 delSelectedBtn인 태그를 클릭하면 발생하는 이벤트
+    
 
+    // select 태그의 change 이벤트 등록
+    let chgEvent = new Event("change");
+    document.querySelector("#pageCnt").addEventListener("change",changeListFnc);
 
     // 데이터 한건 활용해서 tr요소를 생성
     function makeTr(item){ // item은 json형식(객체)의 데이터 여야함
@@ -389,28 +397,79 @@
 
     // 페이지 목록()
     function showPages(curPage = 5){ // curPage : 현재 출력할 페이지
+      // init. 초기화
+      document.querySelectorAll("#paging a").forEach(item => item.remove()); // paging태그 아래의 모든 a태그들을 삭제
+
+      let pageCnt = parseInt(localStorage.getItem("pageCnt"));
+
+      // 전체건수
+      let totalCnt = parseInt(localStorage.getItem("total"));  // localStorage에 result의 전체건수를 total이라는 변수에 담아놓은 것을 가져옴
+      
       let endPage = Math.ceil(curPage / 10) * 10; // 끝페이지, Math.ceil : 올림
-      let startPage = endPage - 9; // 시작 페이지
-      let realEnd = Math.ceil(255 / 10); // 진짜 마지막 페이지
-      let paging = document.getElementById("paging");
+      let startPage = endPage  - 9; // 시작 페이지
+      let realEnd = Math.ceil(totalCnt / pageCnt); // 진짜 마지막 페이지
+      let prev,next; // 이전 페이지목록 , 다음 페이지목록
+
       endPage = endPage > realEnd ? realEnd : endPage; // 끝페이지 > 진짜 마지막페이지보다 크다면 진짜마지막페이지를 저장
+      prev = startPage > 1 ? true : false; // startPage가 1보다 크면 true
+      next = endPage < realEnd ? true : false; // endPage가 진짜마지막페이지보다 작다면 true
+
+      let paging = document.getElementById("paging");
+
+      // prev & next
+      if(prev){ // 이전 페이지가 있다면 (시작페이지가 1이 아니라면)
+        let aTag = document.createElement('a'); // a 태그 생성
+        aTag.addEventListener("click", showListPages);
+        aTag.href = "#"; // a태그의 href의 속성 
+        aTag.page = startPage-1; // innerText 속성이 페이지값을 활용
+        aTag.innerHTML= '&laquo'; //startPage-1;
+        paging.append(aTag); // <div><a href="">1</a><ahref="">2</a>....</div>
+      }
 
       for(let i = startPage; i <= endPage; i++){ // 시작페이지 ~ 끝페이지
         let aTag = document.createElement('a'); // a 태그 생성
-        aTag.href = "../index.html"; // a태그의 href의 속성 index.html
+        aTag.addEventListener("click", showListPages);
+        aTag.href = "#"; // a태그의 href의 속성 
         aTag.innerText = i;
-        paging.append(aTag); // <div><a href="../index.html">1</a><ahref="../index.html">2</a>....</div>
+        aTag.page = i; // innerText 속성이 페이지값을 활용
+        if(i == curPage){
+          aTag.className = "active"; // aTag.setAttribute("class", "active");
+        }
+        paging.append(aTag); // <div><a href="">1</a><ahref="">2</a>....</div>
       }
+
+      if(next){ // 다음 페이지가 있다면(진짜 마지막 페이지가 아니라면)
+        let aTag = document.createElement('a'); // a 태그 생성
+        aTag.addEventListener("click", showListPages);
+        aTag.href = "#"; // a태그의 href의 속성 
+        aTag.page = endPage + 1 ; // innerText 속성이 페이지값을 활용
+        aTag.innerHTML = '&raquo;'; //endPage + 1 ;
+        paging.append(aTag); // <div><a href="">1</a><ahref="">2</a>....</div>
+      }
+
     }
- 
+
+    // 페이지 클릭하면 페이지 목록 & 사원목록
+    function showListPages(e){
+      //console.log(e.target.innerText); 
+      let page = e.target.page; // 내가 클릭한 a태그에 속성을 넣음
+      showPages(page); // 내가 클릭한 페이지의 목록을 보여줌
+      employeeList(page); // 내가 클릭한 페이지의 사원목록을 보여줌
+    }
+
     // 사원 목록()
     function employeeList(curPage = 5){ // 현재 출력할 페이지
 
-      // 1~10 , 11 ~ 20...
-      let end = curPage * 10; // 끝목록
-      let start = end - 9; // 시작 목록
-
+      //init. 
+      document.querySelectorAll("#list tr").forEach(item => item.remove()); // list 아래의 tr들을(사원목록 행) 모두 제거
       
+      let pageCnt = parseInt(localStorage.getItem("pageCnt"));
+      console.log("pageCnot: ",pageCnt);
+
+      // 1~10 , 11 ~ 20...
+      let end = curPage * pageCnt; // 끝목록
+      let start = end - (pageCnt-1); // 시작 목록
+
       let newList = totalAry.filter((emp, idx) => { // totalAry : 전체 사원목록 배열
         // idx와 totalAry는 0부터 시작 , 0 ~ 9 => 10개
         // start(1부터시작) ~ end-1 사이의 목록에 해당하는 것들만 newList변수에 저장됨
@@ -424,4 +483,11 @@
         lst.append(tr);
       })
 
+    }
+
+    function changeListFnc(e){
+      localStorage.setItem("pageCnt",this.value); // select option의 value 값이 pageCnt에 저장이됨
+      // 페이지건수 변경이 되면 첫페이지부터 보여주도록 한다.
+      showPages(1); // 내가 클릭한 페이지의 목록을 보여줌
+      employeeList(1); // 내가 클릭한 페이지의 사원목록을 보여줌
     }
