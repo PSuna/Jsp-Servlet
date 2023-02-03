@@ -13,7 +13,7 @@ import com.yedam.emp.service.EmpService;
 import com.yedam.emp.service.EmpServiceImpl;
 import com.yedam.vo.EmpVO;
 
-public class ServiceControl implements Command { // 구현 클래스
+public class ServiceControl implements Command { // 서버단
 
 	@Override
 	public void exec(HttpServletRequest req, HttpServletResponse resp) {
@@ -24,7 +24,7 @@ public class ServiceControl implements Command { // 구현 클래스
 		// json 목록
 		Gson gson = new GsonBuilder().create();
 		try {
-			resp.getWriter().print(gson.toJson(list));
+			resp.getWriter().print(gson.toJson(list)); // 클라이언트에게 응답
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
