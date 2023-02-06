@@ -12,6 +12,7 @@ bookArrayList(); // 초기화면 : 도서 목록 출력(리스트)
 
 // 2번 문제 : 도서 목록(리스트)
 function bookArrayList(){ 
+	list.innerText="";
 	bookList.forEach(item => {
 		let tr = document.createElement("tr");
 		let td = document.createElement("td");
@@ -53,7 +54,7 @@ function bookArrayList(){
 // 3번문제 : 저장 버튼 클릭시 발생하는 이벤트
 saveBtn.addEventListener("click", function(){
 	// 저장버튼 여러번 클릭시 초기화(그전에 있던 리스트들이 또 등장하지않도록)
-	list.innerText="";
+	
 	let book = {
 							bookCode:bookCode.value,
 							bookTitle:bookName.value,
@@ -77,8 +78,20 @@ saveBtn.addEventListener("click", function(){
 // 4번문제 : 삭제 버튼 클릭시 삭제처리하는 이벤트함수
 list.addEventListener("click",function(event){
 	if(event.target.nodeName == "BUTTON"){ // 삭제 버튼을 눌렀다면
-		let btn = event.target;
-		btn.closest("tr").remove(); // 해당 tr태그 삭제
+		let btn = event.target.closest("tr");
+		//btn.closest("tr").remove(); // 해당 tr태그 삭제
+		let code = btn.children[1].innerText;
+		let index = 0;
+		for(let i = 0; i<bookList.length; i++){
+			if(bookList[i].bookCode.indexOf(code) < 0){
+				continue;
+			}
+			//console.log(bookList[i].bookCode);
+			index = i;
+		}
+		bookList.splice(index,1);
+		//console.log(index);
+		bookArrayList();
 	}
 })
 
@@ -104,7 +117,22 @@ checkDel.addEventListener("click", function(){
 	let selectAll = document.querySelectorAll("#list input[type='checkbox']");
 	selectAll.forEach(item => {
 		if(item.checked == true){
-			item.closest("tr").remove();
+		//item.closest("tr").remove();
+			
+		//let btn = item.closest("tr");
+		//btn.closest("tr").remove(); // 해당 tr태그 삭제
+		let code = item.closest("tr").children[1].innerText;
+		let index = 0;
+		for(let i = 0; i<bookList.length; i++){
+			if(bookList[i].bookCode.indexOf(code) < 0){
+				continue;
+			}
+			//console.log(bookList[i].bookCode);
+			index = i;
+		}
+		bookList.splice(index,1);
+		//console.log(index);
 		}
 	});
+		bookArrayList();
 })
