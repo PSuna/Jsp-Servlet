@@ -1,4 +1,4 @@
-<%@page import="com.yedam.vo.EmpVO"%>
+<%@page import="com.yedam.emp.vo.EmpVO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <jsp:include page="../includes/header.jsp"></jsp:include>
@@ -36,7 +36,7 @@
 	<tr>
 		<td colspan="2" align="center">
 			<button class="btn btn-primary" onclick="location.href='empModForm.do?id=<%=emp.getEmployeeId()%>'">수정</button>
-			<button class="btn btn-warning">삭제</button>
+			<button class="btn btn-warning" onclick="location.href='empRemove.do?id=<%=emp.getEmployeeId()%>'">삭제</button> <!-- empRemove.do?id=? / removeEmp(int id) / 삭제후 목록으로 -->
 		</td>
 	</tr>
 </table>

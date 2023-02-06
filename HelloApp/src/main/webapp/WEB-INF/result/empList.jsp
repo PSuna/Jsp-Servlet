@@ -1,7 +1,7 @@
-<%@page import="com.yedam.vo.EmpVO"%>
+<%@page import="com.yedam.emp.vo.EmpVO"%>
 <%@page import="com.yedam.emp.service.EmpServiceImpl"%>
 <%@page import="com.yedam.emp.service.EmpService"%>
-<%@page import="com.yedam.vo.EmpVO"%>
+<%@page import="com.yedam.emp.vo.EmpVO"%>
 <%@page import="java.util.List"%>
 <%@page import="com.yedam.emp.service.EmpServiceImpl"%>
 <%@page import="com.yedam.emp.service.EmpService"%>
@@ -10,8 +10,8 @@
 <jsp:include page="../includes/header.jsp"></jsp:include>
 
 	<%
-		EmpService service = new EmpServiceImpl();
-		List<EmpVO> list = service.empList();
+		//EmpService service = new EmpServiceImpl();
+		List<EmpVO> list = (List<EmpVO>) request.getAttribute("empList");
 	%>
 	<h3>사원목록(EmpControl.do 의 결과 페이지.)</h3>
 	<table class = "table">

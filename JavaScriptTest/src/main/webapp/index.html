@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<style>
+	/* #show{
+		width: 1000px;
+	}
+
+	 #titles label{
+		float: left;
+		width: 200px;
+		text-align: center;
+		background-color: #ccc;
+
+	}
+
+	#titles input{
+		display: inline-block;
+		margin: 5px;
+		width: 400px;
+	}
+
+	#btns{
+		float: left;
+		width: 200px;
+	}
+	#tbl{
+		clear: both;
+	}
+	*/
+
+	#show{
+	display: flex;
+	align-items: center;
+	justify-content: left;
+	margin: auto;
+ }
+
+  #titles label{
+		float: left;
+		width: 200px;
+		text-align: center;
+		background-color: #ccc;
+
+	}
+
+	#titles input{
+		display: inline-block;
+		margin: 5px;
+		width: 400px;
+	}
+
+	#title th{
+		background-color: rgb(35, 32, 32);
+		color: white;
+		width: 500px;
+	}
+
+ #list tr{
+	text-align: center;
+ } 
+
+ #btns button{
+	width: 100px;
+	margin-bottom: 10px;
+	margin-left: 50px;
+	padding : 10px;
+ }
+ 
+#list button{
+	width: 100px;
+}
+
+</style>
+</head>
+
+<body>
+	<h3>도서목록 페이지</h3>
+	<hr>
+	<div id="show">
+			<div id="titles">
+				<label class="field">도서코드</label> <input type="text" id="bookCode"><br>
+				<label class="field">도서명</label> <input type="text" id="bookName"><br>
+				<label class="field">저자</label> <input type="text" id="author"><br>
+				<label class="field">출판사</label> <input type="text" id="press"><br>
+				<label class="field">금액</label> <input type="text" id="price"><br>
+			</div>
+			<div id="btns">
+				<button type="button" id="saveBtn">저장</button>
+				<br>
+				<button type="button" id="checkDel">선택삭제</button>
+			</div>
+	</div>
+	<table id="tbl" border="1">
+		<thead id="title">
+			<tr>
+				<th><input type="checkbox"></th>
+				<th>도서코드</th>
+				<th>도서명</th>
+				<th>저자</th>
+				<th>출판사</th>
+				<th>가격</th>
+				<th>삭제</th>
+			</tr>
+		</thead>
+		<tbody id="list">
+			<!-- tr , td만들어서 넣기-->
+	
+		</tbody>
+	</table>
+	<script src="js/book.js"></script>
+</body>
+
+</html>

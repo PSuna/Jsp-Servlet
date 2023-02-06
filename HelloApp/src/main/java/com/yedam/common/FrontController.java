@@ -17,6 +17,7 @@ import com.yedam.emp.command.EmpForm;
 import com.yedam.emp.command.EmpList;
 import com.yedam.emp.command.EmpModControl;
 import com.yedam.emp.command.EmpModFormControl;
+import com.yedam.emp.command.EmpRemoveControl;
 import com.yedam.emp.command.LoginControl;
 import com.yedam.emp.command.ServiceControl;
 
@@ -38,6 +39,7 @@ public class FrontController extends HttpServlet {
 		map.put("/main.do", new MainControl());
 		map.put("/service.do", new ServiceControl()); // url 패턴과 실행하고 싶은 프로그램을 넣어줌
 		map.put("/login.do", new LoginControl());
+		map.put("/errorPage", new ErrorPage());
 		// get : 목록출력(json) , post : 입력처리
 		map.put("/employee.do", new EmpControl());
 		// WEB-INF 폴더에 html 파일들이 있을때 => xxxForm.do : 페이지 오픈
@@ -45,8 +47,8 @@ public class FrontController extends HttpServlet {
 		map.put("/empList.do", new EmpList()); // 목록페이지
 		map.put("/empDetail.do", new EmpDetailControl()); // 상세페이지
 		map.put("/empModForm.do", new EmpModFormControl()); // 수정 화면 페이지
-		//map.put("/empModify.do", new EmpModControl()); // 수정 처리 페이지
-		
+		map.put("/empModify.do", new EmpModControl()); // 수정 처리 페이지
+		map.put("/empRemove.do", new EmpRemoveControl()); // 삭제 처리 페이지
 	}
 	
 	@Override // 모든 요청은 service 메소드를 실행함!!!!!!

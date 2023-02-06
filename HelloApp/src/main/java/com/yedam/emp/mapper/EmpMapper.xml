@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="com.yedam.emp.mapper.EmpMapper">
+  <!-- id : 쿼리구문을 id값으로 구분함 / resultType : 반환되는 타입 -->
+  <!-- 주의! sql문에 ;(세미콜론)넣으면 안됨 -->
+  <select id="empList" resultType="com.yedam.emp.vo.EmpVO">
+    select * from emp_temp order by employee_id
+  </select>
+  
+  <!-- 넘어오는 파라미터 값 #{}안에 쓰기 -->
+  <!-- parameterType : 파라미터 타입 -->
+  <select id="getEmp" resultType="com.yedam.emp.vo.EmpVO" parameterType="int">
+  	select * from emp_temp where employee_id = #{empId}
+  </select>
+</mapper>

@@ -1,9 +1,10 @@
 package com.yedam.emp.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.yedam.emp.dao.EmpDAO;
-import com.yedam.vo.EmpVO;
+import com.yedam.emp.vo.EmpVO;
 
 public class EmpServiceImpl implements EmpService{ // DB에 대한 기능을 구현해서 그것을 불러오는 역할
 	
@@ -25,6 +26,22 @@ public class EmpServiceImpl implements EmpService{ // DB에 대한 기능을 구
 	@Override
 	public EmpVO getEmp(int empId) {
 		return dao.searchEmp(empId);
+	}
+	
+	@Override
+	public Map<String, String> jobList() {
+	
+		return dao.jobList();
+	}
+	
+	@Override
+	public int modEmp(EmpVO emp) {
+		return dao.updateEmp(emp);
+	}
+	
+	@Override
+	public int remove(int id) {
+		return dao.removeEmp(id);
 	}
 
 

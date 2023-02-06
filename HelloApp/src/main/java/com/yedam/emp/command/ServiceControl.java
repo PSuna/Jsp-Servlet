@@ -11,7 +11,7 @@ import com.google.gson.GsonBuilder;
 import com.yedam.common.Command;
 import com.yedam.emp.service.EmpService;
 import com.yedam.emp.service.EmpServiceImpl;
-import com.yedam.vo.EmpVO;
+import com.yedam.emp.vo.EmpVO;
 
 public class ServiceControl implements Command { // 서버단
 
