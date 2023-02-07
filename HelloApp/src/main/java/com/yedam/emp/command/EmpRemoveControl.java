@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.yedam.common.Command;
 import com.yedam.emp.service.EmpService;
 import com.yedam.emp.service.EmpServiceImpl;
+import com.yedam.emp.service.EmpServiceMybatis;
 
 public class EmpRemoveControl implements Command {
 
@@ -16,7 +17,7 @@ public class EmpRemoveControl implements Command {
 	public void exec(HttpServletRequest req, HttpServletResponse resp) {
 		String id = req.getParameter("id");
 		
-		EmpService service = new EmpServiceImpl();
+		EmpService service = new EmpServiceMybatis();
 		int r = service.remove(Integer.parseInt(id));
 		
 		if(r > 0) { // 삭제가 정상처리 되면 리스트목록이동

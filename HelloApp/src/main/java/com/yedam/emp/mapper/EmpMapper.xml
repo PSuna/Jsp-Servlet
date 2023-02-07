@@ -4,8 +4,8 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
   
 <mapper namespace="com.yedam.emp.mapper.EmpMapper">
-  <!-- id : 쿼리구문을 id값으로 구분함 / resultType : 반환되는 타입 -->
-  <!-- 주의! sql문에 ;(세미콜론)넣으면 안됨 -->
+  <!-- id : 쿼리구문을 id값으로 구분함(메소드명이라고 생각하면 편함) / resultType : 반환되는 타입 -->
+  <!-- ★주의! sql문에 ;(세미콜론)넣으면 안됨 -->
   <select id="empList" resultType="com.yedam.emp.vo.EmpVO">
     select * from emp_temp order by employee_id
   </select>
@@ -15,4 +15,26 @@
   <select id="getEmp" resultType="com.yedam.emp.vo.EmpVO" parameterType="int">
   	select * from emp_temp where employee_id = #{empId}
   </select>
+  
+  <!-- 추가 -->
+  <insert id="addEmp" parameterType="com.yedam.emp.vo.EmpVO">
+  	insert into emp_temp(employee_id, last_name, email, hire_date, job_id) values (#{employeeId}, #{lastName}, #{email}, #{hireDate}, #{jobId})
+  </insert>
+  
+  <!-- 조회 -->
+  <select id="jobList" resultType="map">
+  	select job_id as "jobId", job_title as "jobTitle" from jobs order by job_id
+  </select>
+  
+  <!-- 수정 -->
+  <update id="modEmp" parameterType="com.yedam.emp.vo.EmpVO">
+  	update emp_temp set first_name = #{firstName}, last_name = #{lastName}, email = #{email}, job_id = #{jobId}, hire_date = #{hireDate} where employee_id = #{employeeId}
+  </update>
+  
+  <!-- 삭제 -->
+  <!-- EmpServiceMybatis에서로부터 넘어오는 매개값(id:변수명을 똑같이 써야함)를 그대로 사용해야함 -->
+  <delete id="remove" parameterType="int">
+  	delete from emp_temp where employee_id = #{id}
+  </delete>
+  
 </mapper>

@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.yedam.common.Command;
 import com.yedam.emp.service.EmpService;
-import com.yedam.emp.service.EmpServiceImpl;
+import com.yedam.emp.service.EmpServiceMybatis;
 import com.yedam.emp.vo.EmpVO;
 
 public class EmpControl implements Command { // 서버단
@@ -56,7 +56,7 @@ public class EmpControl implements Command { // 서버단
 			emp.setEmail(mail);
 			
 			// 서비스 로직
-			EmpService service = new EmpServiceImpl();
+			EmpService service = new EmpServiceMybatis();
 			int r = service.addEmp(emp);
 			
 			// 요청재지정 : 다른페이지를 그려줄수있음(나타낼수있음)

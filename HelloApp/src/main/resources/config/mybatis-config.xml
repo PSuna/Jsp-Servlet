@@ -4,8 +4,19 @@
   "https://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
 	<settings>
-		<setting name="mapUnderscoreToCamelCase" value="true"/> <!-- 오라클의 언더바를 카멜케이스로 가져오겠다는말 -->
+		<!-- 오라클의 칼럼이름과 똑같이 써야하므로 -->
+		<!-- 오라클의 언더바를 카멜케이스로 가져오겠다는말 -->
+		<setting name="mapUnderscoreToCamelCase" value="true"/> 
+		
+		<!-- db에 null 타입이 들어가면 null값으로 대체해서 넣겠다는 말 -->
+		<setting name="jdbcTypeForNull" value="NULL"/>
 	</settings>
+	
+	<!--  MemberVO 만 치면 자동적으로 "com.yedam.member.vo.MemberVO"로 설정해주는 구문 -->
+	<typeAliases>
+		<typeAlias alias="MemberVO" type="com.yedam.member.vo.MemberVO"/>
+	</typeAliases>
+	
   <environments default="development">
     <environment id="development">
       <transactionManager type="JDBC"/>
@@ -19,5 +30,6 @@
   </environments>
   <mappers>
     <mapper resource="com/yedam/emp/mapper/EmpMapper.xml"/>
+    <mapper class = "com.yedam.member.mapper.MemberMapper"/> <!-- 클래스도 적용이 가능함 -->
   </mappers>
 </configuration>

@@ -14,7 +14,7 @@ import com.yedam.emp.vo.EmpVO;
 public class EmpServiceMybatis implements EmpService {
 
 	SqlSessionFactory sessionFactory = DataSource.getInstance();
-	SqlSession session = sessionFactory.openSession(); // session 객체를 하나 가져옴
+	SqlSession session = sessionFactory.openSession(true); // true : 자동커밋 // session 객체를 하나 가져옴
 	
 	
 	@Override
@@ -27,8 +27,15 @@ public class EmpServiceMybatis implements EmpService {
 
 	@Override
 	public int addEmp(EmpVO emp) {
-		// TODO Auto-generated method stub
-		return 0;
+		// A -> B 송금
+		// session.commit();
+		int r = session.insert("com.yedam.emp.mapper.EmpMapper.addEmp",emp);
+		if(r>0) {
+			session.commit(); // 커밋
+		}else {
+			session.rollback(); // 되돌아가기
+		}
+		return r;
 	}
 
 	@Override
@@ -39,20 +46,17 @@ public class EmpServiceMybatis implements EmpService {
 
 	@Override
 	public Map<String, String> jobList() {
-		// TODO Auto-generated method stub
-		return null;
+		return null; //session.select("com.yedam.emp.mapper.EmpMapper.jobList");
 	}
 
 	@Override
 	public int modEmp(EmpVO emp) {
-		// TODO Auto-generated method stub
-		return 0;
+		return session.update("com.yedam.emp.mapper.EmpMapper.modEmp",emp);
 	}
 
 	@Override
 	public int remove(int id) {
-		// TODO Auto-generated method stub
-		return 0;
+		return session.delete("com.yedam.emp.mapper.EmpMapper.remove",id);
 	}
 
 	

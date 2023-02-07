@@ -7,11 +7,10 @@
 	//리턴되는 타입은 객체타입
 	// 아까 컨트롤러에서 넘겨준 요청정보에 searchVO가 참조하고있는 주소값을 가져옴
 	EmpVO emp = (EmpVO)request.getAttribute("searchVO"); 
-	Integer age = (Integer)request.getAttribute("myAge");
-	String id = (String)request.getAttribute("loginId");
+	String id = (String)session.getAttribute("id");
+	//Integer age = (Integer)request.getAttribute("myAge");
+	//String id = (String)request.getAttribute("loginId");
 %>
-
-<!--  <%=age %>, <%=id %> -->
 
 <h3>현재 페이지는 empDatail.do의 결과 empDetail.jsp입니다.</h3>
 <table class="table">
@@ -35,8 +34,12 @@
 	</tr>
 	<tr>
 		<td colspan="2" align="center">
-			<button class="btn btn-primary" onclick="location.href='empModForm.do?id=<%=emp.getEmployeeId()%>'">수정</button>
+			<%if(id != null){ %>
+     			<button class="btn btn-primary" onclick="location.href='empModForm.do?id=<%=emp.getEmployeeId()%>'">수정</button>
 			<button class="btn btn-warning" onclick="location.href='empRemove.do?id=<%=emp.getEmployeeId()%>'">삭제</button> <!-- empRemove.do?id=? / removeEmp(int id) / 삭제후 목록으로 -->
+     		<% } else{ %>
+     			<!--  <span>Guest</span> -->
+     		<%}%>
 		</td>
 	</tr>
 </table>
