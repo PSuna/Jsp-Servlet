@@ -41,7 +41,7 @@ public class SignOnControl implements Command{
 			Enumeration<?> files = multi.getFileNames(); // 사진을 여러장 업로드 할수있음
 			while(files.hasMoreElements()) {
 				String file = (String) files.nextElement(); // 파일의 이름만 읽어들임
-				System.out.println(file);
+				//System.out.println(file);
 				fileName = multi.getFilesystemName(file); // 동일한 파일명이 있다면 바뀐파일의 이름을 읽어오는것
 			}
 			

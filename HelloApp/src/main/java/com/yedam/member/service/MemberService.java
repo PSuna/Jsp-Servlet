@@ -11,5 +11,6 @@ public interface MemberService { // 서비스부분
 	public MemberVO login(MemberVO member);
 	public int addMember(MemberVO member);
 	public List<MemberVO> memberList();
+	public MemberVO getMember(String id); // 회원정보 조회용
 	
 }

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE tiles-definitions PUBLIC
+       "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN"
+       "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
+       
+<tiles-definitions>
+  <definition name="myapp.homepage" template="/layouts/classic.jsp"> 
+    <put-attribute name="title" value="Tiles tutorial homepage" />
+    <put-attribute name="header" value="/tiles/banner.jsp" />
+    <put-attribute name="menu" value="/tiles/common_menu.jsp" />
+    <put-attribute name="body" value="/tiles/home_body.jsp" />
+    <put-attribute name="footer" value="/tiles/credits.jsp" />
+  </definition>
+  
+  <!--  myapp.homepage를 확장하겠다는말 -->
+  <!-- {1} : WILDCARD:*/*의 첫번째 * 값 -->
+  <!-- {2} : WILDCARD:*/*의 두번째 * 값 -->
+  <!-- <put-attribute name="body" value="/tiles/home_body.jsp" /> 부분을 대체하겠다는말 -->
+  <definition name="WILDCARD:other/*" extends="myapp.homepage"> 
+  	<put-attribute name="body" value="/WEB-INF/views/other/{1}.jsp"/> 
+  </definition>
+  
+  <definition name="myapp.app" template="/WEB-INF/layout/template.jsp">
+  	<put-attribute name="title" value="Tiles Page"/>
+  	<put-attribute name="header" value="/WEB-INF/layout/header.jsp"/>
+  	<put-attribute name="menu" value="/WEB-INF/layout/menu.jsp"/>
+  	<put-attribute name="body" value="/WEB-INF/layout/body.jsp" />
+  </definition>
+  
+  <!-- 제일 마지막에  <definition name="WILDCARD:*/*" extends="myapp.app"> */*를 선언해줘야함-->
+  <definition name="WILDCARD:*/*" extends="myapp.app"> 
+  	<put-attribute name="body" value="/WEB-INF/views/{1}/{2}.jsp"/> 
+  </definition>
+  
+</tiles-definitions>

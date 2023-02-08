@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <!--  namespace : 클래스 라고 생각하기 -->
+<mapper namespace="com.yedam.notice.mapper.NoticeMapper">
+
+  <select id="selectList" resultType="NoticeVO"> <!-- id: 메소드명이라고 생각하기 -->
+    SELECT * FROM tbl_notice ORDER BY notice_id DESC
+  </select>
+  
+  <select id="searchOne" resultType="NoticeVO">
+  	SELECT * FROM tbl_notice WHERE notice_id=#{nid}
+  </select>
+  
+  <update id="increaseCnt" parameterType="int">
+  	UPDATE tbl_notice
+  	SET hit_count = hit_count + 1
+  	WHERE notice_id = #{nid}
+  </update>
+  
+  <!-- insert 구문은 따로 resultType을 지정하지않아도 됨 -->
+  <!-- parameterType="NoticeVO" : 쿼리를 실행시키기위한 매개값임 -->
+  <insert id="insertNotice" parameterType="NoticeVO">
+  	INSERT INTO tbl_notice (notice_id, notice_writer, notice_title, notice_subject, attach_file)
+	VALUES(notice_seq.nextval, #{noticeWriter}, #{noticeTitle}, #{noticeSubject}, #{attachFile})
+  </insert>
+  
+  <update id="updateNotice" parameterType="NoticeVO">
+  	UPDATE tbl_notice SET notice_title=#{noticeTitle}, notice_subject=#{noticeSubject}
+  	WHERE notice_id=#{noticeId} 
+  </update>
+  
+  <delete id="deleteNotice" parameterType="int">
+  	DELETE from tbl_notice where notice_id=#{nid}
+  </delete>
+  
+</mapper>

@@ -17,4 +17,8 @@
   	select * from members order by member_id
   </select>
   
+  <select id="getMember" parameterType="string" resultType="MemberVO">
+  	select * from members where member_id=#{id}
+  </select>
+  
 </mapper>
