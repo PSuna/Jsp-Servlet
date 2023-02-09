@@ -35,4 +35,22 @@
   	DELETE from tbl_notice where notice_id=#{nid}
   </delete>
   
+  <select id="replyList" resultType="ReplyVO">
+  	select * from tbl_reply where notice_id = #{nid} order by reply_id
+  </select>
+  
+  <delete id="deleteReply" parameterType="int">
+  	delete from tbl_reply where reply_id = #{rid}
+  </delete>
+  
+  <insert id="insertReply" parameterType="ReplyVO">
+   <!-- insert하기 전에 replyId를 생성해서 ReplyVO타입에다가 넣어줘서 다음 insert쿼리문 실행할때 values값으로 넣어주기 -->
+  	<selectKey keyProperty="replyId" resultType="int" order="BEFORE">
+  	 	select reply_seq.nextval from dual
+  	</selectKey>
+  	
+  	insert into tbl_reply(reply_id, notice_id, reply_title, reply_subject, reply_writer)
+	values (${replyId}, #{noticeId}, #{replyTitle}, #{replySubject}, #{replyWriter})
+  </insert>
+  
 </mapper>
