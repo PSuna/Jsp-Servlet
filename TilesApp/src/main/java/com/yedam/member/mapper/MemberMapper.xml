@@ -24,7 +24,7 @@
   <update id="updateMember" parameterType="MemberVO">
   	update members 
   	set member_id = #{memberId}, member_pw = #{memberPw}, member_name = #{memberName}, member_phone = #{memberPhone}, member_addr = #{memberAddr}
-  	where member_id=#{mid}
+  	where member_id=#{memberId}
   </update>
   
 </mapper>

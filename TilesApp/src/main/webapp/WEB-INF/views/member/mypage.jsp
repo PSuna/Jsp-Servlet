@@ -25,10 +25,10 @@
 			<th>주소</th>
 			<td><input type="text" name="maddr" value="${vo.memberAddr}"></td>
 		</tr>
-		<tr>
+		<!-- <tr>
 			<th>image</th>
 			<td><img width="150px" src="images/${vo.image}"></td>
-		</tr>
+		</tr> -->
 		<tr>
 			<td colspan="2" align="center">
 				<input type="submit" value="수정">

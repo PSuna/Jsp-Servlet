@@ -33,11 +33,11 @@ public class ModifyMember implements Command {
 		MemberService service = new MemberServiceMybatis();
 		int r = service.modifyMember(member);
 		
-		if(r > 0) {
+		if(r > 0) { // 업데이트 성공시 noticeList.do로 이동
 			return "noticeList.do";
 		}
 		
-		return "member/mypage.tiles";
+		return "member/mypage.tiles"; // 실패시 mypage에 머물러있기
 	}
 
 }
