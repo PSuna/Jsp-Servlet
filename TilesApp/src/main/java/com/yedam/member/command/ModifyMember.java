@@ -16,12 +16,14 @@ public class ModifyMember implements Command {
 	@Override
 	public String exec(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		
+		String param = req.getParameter("param");
 		String id = req.getParameter("mid");
 		String name = req.getParameter("mname");
 		String pass = req.getParameter("mpass");
 		String phone = req.getParameter("mphone");
 		String addr = req.getParameter("maddr");
-		//String image = req.getParameter("");
+		String auth = req.getParameter("resp");
+		
 		
 		MemberVO member = new MemberVO();
 		member.setMemberId(id);
@@ -29,15 +31,27 @@ public class ModifyMember implements Command {
 		member.setMemberPw(pass);
 		member.setMemberPhone(phone);
 		member.setMemberAddr(addr);
+		member.setResponsibility(auth);
 		
 		MemberService service = new MemberServiceMybatis();
 		int r = service.modifyMember(member);
 		
-		if(r > 0) { // 업데이트 성공시 noticeList.do로 이동
-			return "noticeList.do";
-		}
 		
-		return "member/mypage.tiles"; // 실패시 mypage에 머물러있기
+		if(param != null && param.equals("ajax")) { // 회원관리에서 수정
+			
+			if(r > 0) {
+				return "{\"retCode\" : \"Success\"}.json";
+			}else {
+				return "{\"retCode\" : \"Fail\"}.json";
+			}
+			
+		} else { // 마이페이지에서 수정
+			if(r > 0) { // 업데이트 성공시 noticeList.do로 이동
+				return "noticeList.do";
+			}else {
+				return "member/mypage.tiles"; // 실패시 mypage에 머물러있기
+			}
+		}
 	}
 
 }

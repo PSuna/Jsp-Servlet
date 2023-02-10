@@ -30,17 +30,20 @@ public class Login implements Command {
 		
 		MemberVO rvo = service.login(member);
 		if( rvo != null) {
-			HttpSession session = req.getSession(); // 쿠키정보를 가져옴
 			
-			session.setAttribute("logId", rvo.getMemberId());
-			session.setAttribute("logPass", rvo.getMemberPw());
-			session.setAttribute("logName", rvo.getMemberName());
+			// session : 응답하고 난뒤에도 사라지지않고 계속 유지되는 데이터임
+			HttpSession session = req.getSession(); 
 			
-			req.setAttribute("vo", rvo); // 세션에 저장
+			session.setAttribute("logId", rvo.getMemberId()); // 로그인한 id
+			session.setAttribute("logName", rvo.getMemberName()); // 로그인한 이름
+			session.setAttribute("Auth", rvo.getResponsibility()); // 권한
+			
+			req.setAttribute("vo", rvo); // 요청정보에 vo를 저장 해당 데이터를 가지고 => 마이페이지로 이동
+			
 			return "member/mypage.tiles";
 			
 		}else { 
-			req.setAttribute("result", "회원정보를 확인하세요!!");
+			req.setAttribute("result", "회원정보를 확인하세요!!"); // 요청 정보 : 응답하고 나면 사라짐
 			return "member/login.tiles";
 		}
 		

@@ -47,7 +47,16 @@ public class FrontController extends HttpServlet {
 		map.put("/loginForm.do", new LoginForm()); // 로그인화면
 		map.put("/login.do", new Login()); // 로그인 처리
 		map.put("/logout.do", new Logout()); // 로그아웃
-		map.put("/modifyMember.do", new ModifyMember());
+		map.put("/modifyMember.do", new ModifyMember()); // 수정 페이지
+		map.put("/myPageForm.do", new MyPageForm()); // 마이페이지
+		map.put("/imageUpload.do", new ImageUpload()); // 이미지 변경 페이지
+		
+		// 관리자 회원관리
+		map.put("/memberManageForm.do", new MemberManager());
+		map.put("/memberList.do", new MemberList());
+		map.put("/addMember.do", new AddMember());
+		map.put("/removeMember.do", new RemoveMember()); 
+		
 	}
 	
 	@Override
@@ -77,7 +86,6 @@ public class FrontController extends HttpServlet {
 			resp.setContentType("text/json;charset=utf-8");
 			resp.getWriter().print(viewPage.substring(0,viewPage.length()-5)); // json데이터들을 화면에 뿌려준다.
 		}
-							
 	}
 	
 }
