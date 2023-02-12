@@ -2,10 +2,12 @@
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
   <!--  namespace : 클래스 라고 생각하기 -->
 <mapper namespace="com.yedam.notice.mapper.NoticeMapper">
 
-  <select id="selectList" resultType="NoticeVO"> <!-- id: 메소드명이라고 생각하기 -->
+  <!-- id: 메소드명이라고 생각하기 , resultType : 반환 타입 -->
+  <select id="selectList" resultType="NoticeVO"> 
     SELECT * FROM tbl_notice ORDER BY notice_id DESC
   </select>
   
@@ -13,6 +15,7 @@
   	SELECT * FROM tbl_notice WHERE notice_id=#{nid}
   </select>
   
+  <!-- parameterType : 값을 넣을 타입 -->
   <update id="increaseCnt" parameterType="int">
   	UPDATE tbl_notice
   	SET hit_count = hit_count + 1
@@ -44,7 +47,7 @@
   </delete>
   
   <insert id="insertReply" parameterType="ReplyVO">
-   <!-- insert하기 전에 replyId를 생성해서 ReplyVO타입에다가 넣어줘서 다음 insert쿼리문 실행할때 values값으로 넣어주기 -->
+   <!-- insert하기 전에 replyId를 시퀀스값으로 생성해서 다음 insert쿼리문 실행할때 values값으로 replyId 넣어주기 -->
   	<selectKey keyProperty="replyId" resultType="int" order="BEFORE">
   	 	select reply_seq.nextval from dual
   	</selectKey>

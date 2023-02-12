@@ -25,14 +25,17 @@ function updateMemberFnc(e){
 	let resp = tr.find('input.auth').val();
 
 	console.log(id, name, addr)
+	
 	$.ajax({	
 			url: 'modifyMember.do',
 			method: 'post', // get , put , post 가능함
-			data : {param:'ajax',mid:id, mname:name, mphone:phone, maddr:addr, resp:resp},
+			data : {param:'ajax', mid:id, mname:name, mphone:phone, maddr:addr, resp:resp}, // 쿼리스트링
 			success: function(result){
 				if(result.retCode == 'Success'){
-					let member = {mid:id, mname:name, mphone:phone, maddr:addr, resp:resp};
-					$('#list').append(makeRow(member));
+					let member = {memberId:id, memberName:name, memberPhone:phone, memberAddr:addr, responsibility:resp};
+					//$('#list').append(makeRow(member));
+					//console.table(makeRow(member));
+					$(tr).replaceWith(makeRow(member));
 					
 				}else{
 					alert("수정 오류!!");
@@ -52,9 +55,10 @@ function updateMemberFnc(e){
 		// member값을 활용해서 tr생성
 		let tr = $('<tr/>'); // document.createElement('tr');
 		
+		// tr을 더블클릭시 실행하는 메소드
 		tr.on('dblclick', function(e){
 			
-			// chilren을 통해 가지고온 하위요소중에서 첫번째값을 가져오라는말
+			// chilren을 통해 가지고온 자식들중에서 첫번째 자식의 ep(0) 값(innerText)을 가져오라는말
 			let id = $(this).children().eq(0).text();
 			let name = $(this).children().eq(1).text();
 			let phone = $(this).children().eq(2).text();
@@ -83,7 +87,7 @@ function updateMemberFnc(e){
 			// 기존의 tr을 새로운 tr로 대체하겠다는말
 			$(this).replaceWith(nTr); 
 		
-		})
+		}) // tr을 더블클릭할때 실행하는 메소드 end
 		
 		tr.append(
 			
@@ -104,11 +108,12 @@ function updateMemberFnc(e){
 	
 	function deleteMemberFnc(e){
 		
-		if(!window.confirm("삭제하시겠습니까?")){
+		if(!window.confirm("삭제하시겠습니까?")){ // 예 : true => !true => false
 			return; // 함수를 종료하면됨
 		}
 		
-		let user = $(e.target).attr("mid"); // mid 속성값을 가져온다는말
+		let user = $(e.target).attr("mid"); // 삭제버튼의 mid 속성값을(=memberId) 가져온다는말
+		
 		$.ajax({
 			
 			url: 'removeMember.do',
@@ -129,16 +134,16 @@ function updateMemberFnc(e){
 	} // end of deleteFnc
 	
 	
-// document를 끝까지 다읽어들인 다음에 해당함수를 실행하도록 하기
+// document(html)를 끝까지 다읽어들인 다음에 해당함수를 실행하도록 하기
 $(document).ready(function(){
 	
 	/* clone하는법  ============================================= */
 	
-	let clone = $('#template').clone(true); // true : 하위에 있는 구조  , false : 상위에 있는 구조
-	console.log(clone.find('tr'));
-	let tr = clone.find('tr');
-	tr.find('.name').val('test');
-	$('#list').append(tr);
+	//let clone = $('#template').clone(true); // true : 하위에 있는 구조  , false : 상위에 있는 구조
+	//console.log(clone.find('tr'));
+	//let tr = clone.find('tr');
+	//tr.find('.name').val('test');
+	//$('#list').append(tr);
 	
 	
 	// ========================================================
@@ -148,12 +153,11 @@ $(document).ready(function(){
 	console.log($('#list'));
 	
 	// fetch 대신 제이쿼리에서 제공해주는 aJax를 사용함
-	$.ajax({
-		
+	$.ajax({	
 		url: 'memberList.do',
 		success : function(result){
 			console.log(result);
-			$(result).each(function(idx, item){ // 자바스크립트와는 forEach 순서가 다름
+			$(result).each(function(idx, item){ // 제이쿼리 : 자바스크립트와는 forEach 순서가 다름
 				$('#list').append(makeRow(item));
 			})
 		},
@@ -172,6 +176,7 @@ $(document).ready(function(){
 		let addr = $('#maddr').val();
 		let img = $('#mimage')[0].files[0];
 		
+		// multipart 데이터
 		let formData = new FormData();
 		formData.append('id',id);
 		formData.append('name',name);
@@ -186,8 +191,8 @@ $(document).ready(function(){
 			url: 'addMember.do',
 			method: 'post',
 			data : formData,
-			contentType: false,
-			processData: false,
+			contentType: false, // 멀티파트일때 작성하는것(formData)
+			processData: false, // 멀티파트일떄 작성하는것(formData)
 			success: function(result){
 				// 처리된 정보를 화면에 생성해줌
 				console.log(result);

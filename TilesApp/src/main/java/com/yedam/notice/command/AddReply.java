@@ -24,20 +24,22 @@ public class AddReply implements Command {
 		String nid = req.getParameter("nid");
 		
 		ReplyVO vo = new ReplyVO();
+		
+		// ★selectKey구문때문에 vo.setReplyId();로 값을 따로 설정해주지않아도 값이 들어가져있는걸 확인할수있다. 
 		vo.setNoticeId(Integer.parseInt(nid));
 		vo.setReplyTitle(title);
 		vo.setReplySubject(subject);
 		vo.setReplyWriter(writer);
+		vo.setReplyDate(new Date());
 		
+		//System.out.println(vo);
 		NoticeService service = new NoticeServiceImpl();
 		service.addReply(vo);
 		
-		// selectKey구문때문에 vo.setNoticeId();로 값을 따로 설정해주지않아도 값이 들어가져있는걸 확인할수있다. 
-		vo.setReplyDate(new Date());
-		System.out.println(vo);
+		
 		
 		Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
-		String json = gson.toJson(vo); // vo객체 => json포맷 변경
+		String json = gson.toJson(vo); // vo객체(object) => json(String)으로 변경
 	
 		return json + ".json";
 		

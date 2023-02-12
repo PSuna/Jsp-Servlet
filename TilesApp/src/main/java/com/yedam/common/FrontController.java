@@ -15,7 +15,7 @@ import com.yedam.member.command.*;
 import com.yedam.notice.command.*;
 
 
-public class FrontController extends HttpServlet {
+public class FrontController extends HttpServlet { // 서블릿 : HttpServlet 클래스를 상속받는 .java파일 
 
 	private Map<String, Command> map;
 	private String charset = null;
@@ -29,6 +29,7 @@ public class FrontController extends HttpServlet {
 	public void init(ServletConfig config) throws ServletException {
 		
 		charset = config.getInitParameter("charset"); // String 타입반환 , 나중에 utf-8 설정할때 필요함
+		// 예제
 		map.put("/main.do", new MainControl());
 		map.put("/second.do", new SecondControl());
 		
@@ -61,6 +62,7 @@ public class FrontController extends HttpServlet {
 	
 	@Override
 	protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		
 		req.setCharacterEncoding(charset); // utf-8 설정
 		
 		String uri = req.getRequestURI();
@@ -77,14 +79,17 @@ public class FrontController extends HttpServlet {
 		
 		if(viewPage.endsWith(".tiles")) {
 			RequestDispatcher rd = req.getRequestDispatcher(viewPage);
-			rd.forward(req, resp);
+			rd.forward(req, resp); // 이동
 			
 		}else if(viewPage.endsWith(".do")) {
 			resp.sendRedirect(viewPage);
 			
 		}else if(viewPage.endsWith(".json")) {
 			resp.setContentType("text/json;charset=utf-8");
-			resp.getWriter().print(viewPage.substring(0,viewPage.length()-5)); // json데이터들을 화면에 뿌려준다.
+			
+			// json 데이터들을 화면에 그려서 나타냄
+			// substring : 해당 길이(범위)만큼 잘라서 가져옴 => 0부터 ~ .json 부분을 자른 범위만큼 가져옴 
+			resp.getWriter().print(viewPage.substring(0,viewPage.length()-5)); // 응답
 		}
 	}
 	

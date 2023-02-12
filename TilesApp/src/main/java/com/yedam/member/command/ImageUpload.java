@@ -24,7 +24,9 @@ public class ImageUpload implements Command{
 		String encoding = "utf-8"; // 4) 인코딩 방식
 		
 		try {
-			// 파일업로드 서블릿
+			// MultipartRequest로 전송받은 데이터를 불러온다.
+			// form에 enctype을 "multipart/form-data"로 선언하고 
+			// submit한 데이터들은 request객체가 아닌 MultipartRequest객체로 불러와야 한다.
 			MultipartRequest multi = new MultipartRequest(req,savaPath,maxSize,encoding,new DefaultFileRenamePolicy());
 			
 			String id = multi.getParameter("id");

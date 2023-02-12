@@ -22,7 +22,7 @@ public class NoticeServiceImpl implements NoticeService {
 	// 목록조회
 	@Override
 	public List<NoticeVO> noticeList() {
-		return mapper.selectList();
+		return mapper.selectList(); // sql문 값 반환
 	}
 
 	// 단건조회

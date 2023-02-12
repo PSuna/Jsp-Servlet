@@ -4,6 +4,7 @@
 
 <h3 style="text-align:center">게시글 등록</h3>
 
+<!-- 파일업로드 : enctype="multipart/form-data" -->
 <form action="noticeAdd.do" enctype="multipart/form-data" method="post">
     <table class="table">
     	<tr>

@@ -53,7 +53,7 @@
 	</tbody>
 </table>
 
-<table id="template" style="display:none;">
+<!--  <table id="template" style="display:none;">
 	<tr>
 		<td>admin</td>
 		<td><input type="text" value="sample"></td>
@@ -63,7 +63,7 @@
 		<td><input type="text" value="sample"></td>
 		<td><button mid="admin">삭제</button></td>
 		
-		<!--  <td><input type="text" class="name"></td>
-		<td><input type="text" class="addr"></td>-->
+		 <td><input type="text" class="name"></td>
+		<td><input type="text" class="addr"></td>
 	</tr>
-</table>
+</table>-->

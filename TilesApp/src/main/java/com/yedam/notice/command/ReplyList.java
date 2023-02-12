@@ -24,9 +24,7 @@ public class ReplyList implements Command {
 		List<ReplyVO> list = service.replyList(Integer.parseInt(nid));
 		
 		// json 포멧 데이터 만들기 
-		Gson gson = new GsonBuilder()
-					.setDateFormat("yyyy-MM-dd HH:mm:ss")
-					.create();
+		Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
 		String json = gson.toJson(list); // {"id":100, "reply":"test....", , , }
 		
 		// {"id":100, "reply":"test....", , , }.json 를 반환

@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-    
+
+<!-- JSTL -->
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
     
 <!-- 날짜의 format(형식)을 줄수있음 -->
@@ -76,14 +77,15 @@ let logId = '${logId}';
 		console.log(error);
 	})
 	
-	// 삭제 버튼 클릭시 => 삭제버튼을 누른 해당(tr)행을 삭제하기 위해 해당행의 data-id속성값(id)을 매개변수로 넘겨줌
+	// 삭제 버튼 클릭시 => 삭제버튼을 누른 해당(tr)행을 삭제하기 위해 
+	// makeTr시 해당행(tr)의 data-id속성값(id)을 매개변수로 넘겨줌
 	function deleteReply(replyId){ 
-		// ajax 호출. fetch()
+		// 제이쿼리의 ajax 호출. == 자바스크립트의 fetch() 와 같은 기능임
 		$.ajax({
 			url: 'removeReply.do', //호출하는 url 패턴을 입력
 			method: 'post', // delete는 여기서 안됨 post방식만됨
 			data : {rid: replyId}, // 넘겨줄 data
-			success : function(result){ // post성공시에 
+			success : function(result){ // result : retCode의 값이 Success/Fali
 				console.log(result);
 				if(result.retCode == 'Success'){
 					$("tr[data-id="+replyId+"]").remove();
@@ -104,7 +106,7 @@ let logId = '${logId}';
 	}
 	
 	
-	
+	// addEventListener 기능
 	$("#addReply").on('click', function(){	
 		let writer = $('#writer').val(); // val() : input 태그의 value값 읽어오는것
 		let subject = $('#subject').val();
@@ -113,8 +115,8 @@ let logId = '${logId}';
 		$.ajax({
 			url:'addReply.do',
 			method:'post',
-			data:{title: title, writer : writer, subject:subject, nid : nid},
-			success: function(result){
+			data:{title: title, writer: writer, subject: subject, nid: nid},
+			success: function(result){ // result : 추가할 vo 객체
 				console.log(result);
 				makeTr(result); // 새로운 row 생성한후 tbody아래에 append.
 			},
@@ -123,7 +125,7 @@ let logId = '${logId}';
 			}
 		})
 		
-		 // val() : input 태그의 value값 읽어오는것
+		// val() : input 태그의 value값 초기화
 		$('#subject').val("");
 		$('#title').val("");
 		
@@ -133,8 +135,9 @@ let logId = '${logId}';
 		// tr : 댓글번호, 제목, 작성자, 작성일자
 		// tr : 댓글내용
 		let tr1 = $('<tr />').attr('data-id', reply.replyId).append( // 자식태그로 추가
-				
-							$("<td />").html("<b>번호:</b>" + reply.replyId), // text : innerText와 같은말, html : innerHTML같은말
+							
+							// text : innerText와 같은말 / html : innerHTML같은말
+							$("<td />").html("<b>번호:</b>" + reply.replyId), 
 							$("<td />").html("<b>제목:</b>" + reply.replyTitle),
 							$("<td />").html("<b>작성자:</b>" + reply.replyWriter),
 							$("<td />").html("<b>날짜:</b>" + reply.replyDate)
@@ -145,8 +148,10 @@ let logId = '${logId}';
 						$("<td colspan='4' />").html(function(){
 						
 						if(reply.replyWriter == logId){
-							return reply.replySubject+ "<button onclick='deleteReply("+reply.replyId+")' class='btn btn-warning'>삭제</button>" // 주의!! ;(세미콜론) 없어야함
+							// 주의!! ;(세미콜론) 없어야함
+							return reply.replySubject+ "<button onclick='deleteReply("+reply.replyId+")' class='btn btn-warning'>삭제</button>" 
 						}else{
+							// 주의!! ;(세미콜론) 없어야함
 							return reply.replySubject
 						}
 						

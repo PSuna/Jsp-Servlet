@@ -75,7 +75,7 @@
 			
 			url : 'imageUpload.do',
 			method: 'post',
-			data: formData,
+			data: formData, // multipart 데이터를 보냄
 			contentType: false, // multipart 요청일 경우의 옵션
 			processData: false, // multipart 요청일 경우의 옵션
 			success: function (result){

@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@WebServlet("/sample") // * : 모든 문자열이 들어올 수 있음
+@WebServlet("/sample") // * : 모든 문자열이 들어올 수 있음 , 여기선 /sample 로 시작
 public class SampleServlet extends HttpServlet{
 
 	// 서블릿. 생명주기(규칙이 정해져있음) : 인스턴스 -> init -> service -> destroy
@@ -23,7 +23,7 @@ public class SampleServlet extends HttpServlet{
 	}
 	
 	@Override
-	protected void service(HttpServletRequest arg0, HttpServletResponse arg1) throws ServletException, IOException {
+	protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		System.out.println("service 실행 : 해당 url을 호출할 때마다 실행됨.");
 	}
 	

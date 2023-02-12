@@ -24,9 +24,14 @@ public class NoticeAdd implements Command {
 		String encoding = "utf-8"; // 4) 인코딩 방식
 		
 		try {
-			// 파일업로드 서블릿
+			
+			// MultipartRequest로 전송받은 데이터를 불러온다.
+			// form에 enctype을 "multipart/form-data"로 선언하고 
+			// submit한 데이터들은 request객체가 아닌 MultipartRequest객체로 불러와야 한다.
 			MultipartRequest multi = new MultipartRequest(req,savaPath,maxSize,encoding,new DefaultFileRenamePolicy());
 			
+			// form에 enctype을 "multipart/form-data"로 선언하고 
+			// submit한 데이터들은 request객체가 아닌 MultipartRequest객체로 불러와야 한다.
 			String title = multi.getParameter("title");
 			String subject = multi.getParameter("subject");
 			String writer = multi.getParameter("writer");
@@ -37,19 +42,21 @@ public class NoticeAdd implements Command {
 			while(files.hasMoreElements()) {
 				String file = (String) files.nextElement(); // 파일의 이름만 읽어들임
 				//System.out.println(file);
+				// 전송받은 데이터가 파일일 경우 getFilesystemName()으로 파일 이름을 받아올 수 있다.
 				fileName = multi.getFilesystemName(file); // 동일한 파일명이 있다면 바뀐파일의 이름을 읽어오는것
 			}
 			
 			// NoticeVO 생성
+			
 			NoticeVO vo = new NoticeVO();
 			vo.setAttachFile(fileName);
 			vo.setNoticeSubject(subject);
 			vo.setNoticeTitle(title);
 			vo.setNoticeWriter(writer);
 			
-			
 			NoticeService service = new NoticeServiceImpl();
 			service.addNotice(vo);
+			
 		}catch(Exception e) {
 			e.printStackTrace();
 		}

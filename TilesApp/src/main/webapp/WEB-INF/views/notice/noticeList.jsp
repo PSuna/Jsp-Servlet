@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
- 
+
+<!--  JSTL -->
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %> 
 
 <style>
@@ -21,6 +22,7 @@
     		</tr>
     	</thead>
     	<tbody>
+    		<!-- var : list배열의 항목 하나 / items : 배열 -->
     		<c:forEach var="notice" items="${list}">
     		<tr>
     			<td>
