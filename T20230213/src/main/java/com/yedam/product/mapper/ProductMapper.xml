@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+  <!--  namespace : 클래스 라고 생각하기 -->
+<mapper namespace="com.yedam.product.mapper.ProductMapper">
+
+  <!-- id: 메소드명이라고 생각하기 , resultType : 반환 타입 -->
+  <select id="getList" resultType="ProductVO"> 
+    select * from product
+  </select>
+  
+  <select id="getProduct" resultType="ProductVO"> 
+    select * from product where product_code = #{productCode}
+  </select>
+  
+  <select id="relatedList" resultType="ProductVO"> 
+    <![CDATA[select * from(select * from product order by like_it desc) where rownum <= 4]]>
+  </select>
+  
+  
+</mapper>

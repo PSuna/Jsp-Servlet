@@ -65,7 +65,7 @@
 let nid = ${vo.noticeId}; 
 let logId = '${logId}';
 
-	fetch('replyList.do?nid='+nid)
+	fetch('relate.do')
 	.then(resolve => resolve.json())
 	.then(result => {
 		console.log(result);

@@ -11,8 +11,28 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.yedam.member.command.*;
-import com.yedam.notice.command.*;
+import com.yedam.member.command.AddMember;
+import com.yedam.member.command.ImageUpload;
+import com.yedam.member.command.Login;
+import com.yedam.member.command.LoginForm;
+import com.yedam.member.command.Logout;
+import com.yedam.member.command.MemberList;
+import com.yedam.member.command.MemberManager;
+import com.yedam.member.command.ModifyMember;
+import com.yedam.member.command.MyPageForm;
+import com.yedam.member.command.RemoveMember;
+import com.yedam.notice.command.AddReply;
+import com.yedam.notice.command.NoticeAdd;
+import com.yedam.notice.command.NoticeAddJson;
+import com.yedam.notice.command.NoticeDetail;
+import com.yedam.notice.command.NoticeForm;
+import com.yedam.notice.command.NoticeList;
+import com.yedam.notice.command.NoticeListJson;
+import com.yedam.notice.command.NoticeListTable;
+import com.yedam.notice.command.NoticeRemove;
+import com.yedam.notice.command.RemoveReply;
+import com.yedam.notice.command.ReplyList;
+import com.yedam.notice.command.noticeListAjax;
 
 
 public class FrontController extends HttpServlet { // 서블릿 : HttpServlet 클래스를 상속받는 .java파일 
@@ -38,6 +58,14 @@ public class FrontController extends HttpServlet { // 서블릿 : HttpServlet �
 		map.put("/noticeDetail.do", new NoticeDetail());
 		map.put("/noticeForm.do", new NoticeForm()); // 글등록화면
 		map.put("/noticeAdd.do", new NoticeAdd()); // 글등록처리
+		map.put("/noticeRemove.do", new NoticeRemove()); // 글삭제처리
+		
+		// 데이터 데이블 연습
+		map.put("/noticeAddJson.do", new NoticeAddJson()); // dataTable 연습용.
+		map.put("/noticeListWithTables.do", new NoticeListTable()); // 데이터 tables
+		map.put("/noticeListJson.do", new NoticeListJson());
+		map.put("/noticeListAjax.do", new noticeListAjax());
+		
 		
 		// 댓글
 		map.put("/replyList.do", new ReplyList()); // 댓글 목록
@@ -90,6 +118,7 @@ public class FrontController extends HttpServlet { // 서블릿 : HttpServlet �
 			// json 데이터들을 화면에 그려서 나타냄
 			// substring : 해당 길이(범위)만큼 잘라서 가져옴 => 0부터 ~ .json 부분을 자른 범위만큼 가져옴 
 			resp.getWriter().print(viewPage.substring(0,viewPage.length()-5)); // 응답
+			
 		}
 	}
 	

@@ -25,8 +25,12 @@
   <!-- insert 구문은 따로 resultType을 지정하지않아도 됨 -->
   <!-- parameterType="NoticeVO" : 쿼리를 실행시키기위한 매개값임 -->
   <insert id="insertNotice" parameterType="NoticeVO">
+    <selectKey keyProperty="noticeId" resultType="int" order="BEFORE">
+  	 	select notice_seq.nextval from dual
+  	</selectKey>
+  
   	INSERT INTO tbl_notice (notice_id, notice_writer, notice_title, notice_subject, attach_file)
-	VALUES(notice_seq.nextval, #{noticeWriter}, #{noticeTitle}, #{noticeSubject}, #{attachFile})
+	VALUES(#{noticeId}, #{noticeWriter}, #{noticeTitle}, #{noticeSubject}, #{attachFile})
   </insert>
   
   <update id="updateNotice" parameterType="NoticeVO">

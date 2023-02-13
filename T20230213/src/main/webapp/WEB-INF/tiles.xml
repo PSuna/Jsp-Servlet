@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE tiles-definitions PUBLIC
+       "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN"
+       "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
+       
+<tiles-definitions>
+	<definition name="myapp.app" template="/WEB-INF/layout/template.jsp">
+	  	<put-attribute name="title" value="Tiles Page"/>
+	  	<put-attribute name="header" value="/WEB-INF/layout/header.jsp"/>
+	  	<put-attribute name="menu" value="/WEB-INF/layout/menu.jsp"/>
+	  	<put-attribute name="body" value="/WEB-INF/layout/body.jsp"/>
+	  	<put-attribute name="footer" value="/WEB-INF/layout/footer.jsp"/>
+	  	<!--  <put-attribute name="body" value="/WEB-INF/layout/body.jsp" /> -->
+	  </definition>
+	  
+  <!-- 제일 마지막에  <definition name="WILDCARD:*/*" extends="myapp.app"> */*를 선언해줘야함-->
+  <definition name="WILDCARD:product/*" extends="myapp.app"> 
+  	<put-attribute name="body" value="/WEB-INF/views/product/{1}.jsp"/> 
+  </definition>
+  
+  <!-- 제일 마지막에  <definition name="WILDCARD:*/*" extends="myapp.app"> */*를 선언해줘야함-->
+  <definition name="WILDCARD:*/*" extends="myapp.app"> 
+  	<put-attribute name="body" value="/WEB-INF/views/{1}/{2}.jsp"/> 
+  </definition>
+  
+</tiles-definitions>
