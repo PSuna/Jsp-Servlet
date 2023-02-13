@@ -21,6 +21,7 @@ public class ProductDetail implements Command {
 		ProductService service = new ProductServiceImpl();
 		
 		req.setAttribute("vo",service.getProduct(code));
+		req.setAttribute("relate", service.relateList());
 		
 		return "product/product.tiles";
 	}

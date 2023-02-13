@@ -13,7 +13,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.yedam.product.command.ProductDetail;
 import com.yedam.product.command.ProductList;
-import com.yedam.product.command.RelatedProduct;
 
 public class FrontController extends HttpServlet {
 
@@ -32,7 +31,6 @@ public class FrontController extends HttpServlet {
 		map.put("/main.do", new MainControl());
 		map.put("/productList.do", new ProductList());
 		map.put("/productDetail.do", new ProductDetail());
-		map.put("/relate.do", new RelatedProduct());
 		
 	}
 

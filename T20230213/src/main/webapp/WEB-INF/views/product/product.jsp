@@ -11,7 +11,7 @@
                     <div class="col-md-6"><img class="card-img-top mb-5 mb-md-0" src="images/${vo.image}" alt="..." />
                     </div>
                     <div class="col-md-6">
-                        <div class="small mb-1">${vo.productCode}</div>
+                        <div class="small mb-1">CODE ${vo.productCode}</div>
                         <h1 class="display-5 fw-bolder">${vo.productName}</h1>
                         <div class="fs-5 mb-5">
                             <span class="text-decoration-line-through">${vo.productPrice}원</span>
@@ -37,14 +37,15 @@
                 <h2 class="fw-bolder mb-4">Related products</h2>
                 <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center" id="list">
 			
-
+			<!-- var : list배열의 항목 하나 / items : 배열 -->
+    		<c:forEach var="product" items="${relate}">
 
 				<div class="col mb-5">
                 <div class="card h-100">
                 <!-- Sale badge-->
                 <div class="badge bg-dark text-white position-absolute" style="top: 0.5rem; right: 0.5rem">Sale</div>
                 <!-- Product image-->
-                <img class="card-img-top" src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg" alt="..." />
+                <img class="card-img-top" src="images/${product.image}" alt="..." />
                 <!-- Product details-->
                 <div class="card-body p-4">
                     <div class="text-center">
@@ -69,42 +70,8 @@
                 </div>
             </div>
         </div>
- 
-                </div>
-            </div>
-        </section>
-        <script>
-
-            fetch('relate.do')
-                .then(resolve => resolve.json())
-                .then(result => {
-                	result.forEach(result => {
-            			makeTr(result);
-            		})
-                })
-                .catch(err => {
-                    console.log(err);
-                })
-             
-            function makeTr(result){
-         		// tr : 댓글번호, 제목, 작성자, 작성일자
-         		// tr : 댓글내용
-         		let name = result.productName;
-         		console.log(name);
-         		let div = $('<div class="col mb-5" />').append( // 자식태그로 추가
-         							
-         							// text : innerText와 같은말 / html : innerHTML같은말
-         							$('<div class="card h-100"/>'),
-         							$('<div class="badge bg-dark text-white position-absolute" style="top: 0.5rem; right: 0.5rem"/>').text("sale"),
-         							$('<img class="card-img-top" src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg" alt="..." />'),
-         							$('<div class="card-body p-4"/>'),
-         							$('<div class="text-center"/>'),
-         							$('<h5 class="fw-bolder"/>').html(name);
-         		
-         						   )
-         						   
-         		console.log(div);
-         		$("#list").append(div);
-            }
-            
-        </script>
+ 		</c:forEach>
+ 		
+       </div>
+   </div>
+ </section>
